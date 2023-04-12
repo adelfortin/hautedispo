@@ -1,1 +1,61 @@
 
+---
+- name: Installer les config necessaire pour rendre fonctionelle la navigation à travers le réseau
+  hosts: webservers
+  become: true
+  vars:
+
+  tasks:
+    # Configuration et installation de DNF et EPEL
+    - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
+      lineinfile:
+        path: /etc/dnf/dnf.conf
+        line: proxy=http://proxy.infra.dgfip:3128
+
+    - name: INSTALL git
+      dnf:
+        name: git
+
+    - name: CONFIG LE PROXY POUR GITHUB
+      ansible.builtin.command: git config --global http.proxy http://proxy.infra.dgfip:3128
+
+    - name: Récupére l'utilisateur courant
+      ansible.builtin.command: whoami
+      register: username
+      become_user: "{{ ansible_facts.hostname }}"
+
+    - name: vérifie que la valeur est bien enregistré
+      ansible.builtin.debug:
+        var: username.stdout
+
+    - name: Copier les polices de caractère sur la machine
+      ansible.builtin.git:
+        repo: https://github.com/adelfortin/fontspowerline
+        dest: /home/{{ username.stdout }}/.fonts/ 
+        clone: yes
+        update: yes
+
+    - name: Installe les polices de caractères sur la machine
+      ansible.builtin.command: bash /home/{{ username.stdout }}/.fonts/install.sh
+
+  
+    - name: Installe les prompt personnalisé
+      ansible.builtin.git:
+        repo: https://github.com/adelfortin/exportation
+        dest: /home/{{ username.stdout }}/.bash/themes/agnoster-bash/
+        clone: yes
+        update: yes
+
+    - name: Déplace le fichier de configuation BASHRC au bon endroit
+      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc
+
+    - name: Installation du theme du prompt de root
+      ansible.builtin.command: cp /home/{{ username.stdout }}/.bash/themes/agnoster-bash /root/.bash/themes/agnoster-bash
+
+    - name: Préparation du .bashrc de root
+      ansible.builtin.command: mv /root/.bash/themes/agnoster-bash/.bashrc /root/.bashrc
+        
+    
+
+
+   
