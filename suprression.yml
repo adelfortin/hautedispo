@@ -1,0 +1,24 @@
+---
+- name: PROGRAMME DE SUPPRESSION DES CONFIG
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Récupére l'utilisateur courant pour web1
+      ansible.builtin.command: whoami
+      register: username
+      become_user: "{{ ansible_facts.hostname }}"
+      
+    - name: Efface les configs de bash
+      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.bash
+    
+    - name: Efface les configs de fonts
+      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.fonts
+
+    - name: Efface les configs de bash root
+      ansible.builtin.command: rm -Rf /root/.bash
+    
+    - name: Efface le ficher .bashrc
+      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.bashrc
+    
+    - name: Efface le fichier .bashrc de root
+      ansible.builtin.command: rm -Rf /root/.bashrc
