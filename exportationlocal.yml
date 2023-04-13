@@ -1,8 +1,8 @@
 
-
 ---
 - name: Installer les config necessaire pour rendre fonctionelle la navigation à travers le réseau
-  hosts: webservers
+  hosts: connexion_local
+  connection: local
   become: true
   vars:
 
@@ -60,8 +60,3 @@
     
     - name: Préparation du .bashrc de root
       ansible.builtin.command: cp /home/{{ username.stdout }}/.bashrc /root/
-        
-    
-
-
-   
