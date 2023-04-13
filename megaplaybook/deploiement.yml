@@ -1,0 +1,28 @@
+---
+- name: Configuration en SSH de plusieurs machines pour un CMS hautement disponible
+hosts: connexion_local
+become: true
+vars:
+chemin_fichier_adresses_ipv4: "./adresse_ipv4.log"
+
+tasks:
+- name: Ajout des adresses IP dans l'inventaire.ini
+# Ce script exécute modification_de_inventaire.ini pour écrire les adresses IP dans l'inventaire.ini
+ansible.builtin.command: "./modification_de_inventaire.ini >> inventaire.ini"
+
+- name: Génération des clés SSH
+# Cette commande exécute ssh-keygen pour générer des clés SSH
+ansible.builtin.command: ssh-keygen
+
+- name: Configuration des machines
+# Ce playbook exécute une série de tâches pour configurer les machines
+include_role:
+name: system
+with_items:
+- { name: "machine0", hosts: "connexion_local" }
+- { name: "machine1", hosts: "MACHINE_N°1" }
+- { name: "machine2", hosts: "MACHINE_N°2" }
+- { name: "machine3", hosts: "MACHINE_N°3" }
+- { name: "machine4", hosts: "MACHINE_N°4" }
+- { name: "machine5", hosts: "MACHINE_N°5" }
+- { name: "machine6", hosts: "MACHINE_N°6" }
