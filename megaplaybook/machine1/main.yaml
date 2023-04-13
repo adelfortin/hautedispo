@@ -1,0 +1,51 @@
+---
+- name: Configure network and user settings
+hosts: all
+become: true
+vars:
+ancienne_adresse: "192.168.1.1"
+adresse_ipv4_numero_zero: "192.168.82.1"
+interface_zero: "enp0s3"
+adresse_ipv4_numero_une: "192.168.82.1"
+interface_une: "enp0s8"
+adresse_ipv4_numero_deux: "192.168.83.2"
+interface_deux: "enp0s9"
+adresse_ipv4_numero_trois: "192.168.84.1"
+interface_trois: "enp0s10"
+hostname_machine_une: "haproxyserver1"
+tasks:
+- name: Copy SSH key to remote server
+ansible.builtin.command: ssh-copy-id root@{{ ancienne_adresse }}
+
+- name: Configure first interface
+ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.method auto
+
+- name: Configure second interface
+ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_une }} ipv4.addresses {{ adresse_ipv4_numero_une }}/24 ipv4.method manual
+
+- name: Configure third interface
+ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_deux }} ipv4.addresses {{ adresse_ipv4_numero_deux }}/24 ipv4.method manual
+
+- name: Configure fourth interface
+ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_trois }} ipv4.addresses {{ adresse_ipv4_numero_trois }}/24 ipv4.method manual
+
+- name: Execute routage.sh script
+ansible.builtin.command: ./routage.sh
+
+- name: Enable IP forwarding
+ansible.builtin.command: sysctl -p /etc/sysctl.d/forward.conf
+
+- name: Create new user and generate SSH key
+ansible.builtin.user:
+name: "{{ hostname_machine_une }}"
+shell: /bin/bash
+groups: "{{ hostname_machine_une }},wheel"
+generate_ssh_key: yes
+ssh_key_bits: 2048
+ssh_key_file: .ssh/id_rsa
+
+- name: Set password for new user
+ansible.builtin.command: echo "{{ hostname_machine_une }}"|passwd --stdin {{ hostname_machine_une }}
+
+- name: Move SSH config file to new user's home directory
+ansible.builtin.command: mv sshconfig /home/{{ hostname_machine_une }}/.ssh/config
