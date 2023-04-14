@@ -107,3 +107,6 @@ ansible.builtin.command: mv sshconfig /home/{{ hostname_machine_une }}/.ssh/conf
     
     - name: Préparation du .bashrc de root
       ansible.builtin.command: cp /home/{{ username.stdout }}/.bashrc /root/
+      
+      - name: Déplace le fichier de configuation des connexions SSH au bon endroit
+      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.configrouteur /home/{{ username.stdout }}/.ssh/config
