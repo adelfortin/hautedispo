@@ -17,9 +17,6 @@ ansible.builtin.command: ssh-copy-id root@{{ ancienne_adresse }}
 - name: Configure first interface
 ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.addresses {{ adresse_ipv4_numero_zero }}/24 ipv4.gateway {{ adresse_de_passerelle_une }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
 
-- name: Configure second interface
-ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_une }} ipv4.addresses {{ adresse_ipv4_numero_une }}/24 ipv4.gateway {{ adresse_de_passerelle_deux }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
-
 - name: Create new user and generate SSH key
 ansible.builtin.user:
   name: "{{ hostname_machine_une }}"
