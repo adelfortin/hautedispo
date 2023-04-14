@@ -33,7 +33,7 @@ ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET if
 ansible.builtin.command: chmod o+x /transformer_en_routeur.sh
 become: true
 
-- name: Execute routage.sh script
+- name: Execute ransformer_en_routeur.sh script
 ansible.builtin.command: ./transformer_en_routeur.sh
 
 - name: Enable IP forwarding
