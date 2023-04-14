@@ -30,7 +30,11 @@ ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET if
 ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_trois }} ipv4.addresses {{ adresse_ipv4_numero_trois }}/24 ipv4.method manual
 
 - name: Execute routage.sh script
-ansible.builtin.command: ./routage.sh
+ansible.builtin.command: chmod o+x /transformer_en_routeur.sh
+become: true
+
+- name: Execute routage.sh script
+ansible.builtin.command: ./transformer_en_routeur.sh
 
 - name: Enable IP forwarding
 ansible.builtin.command: sysctl -p /etc/sysctl.d/forward.conf
