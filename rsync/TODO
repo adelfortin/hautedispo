@@ -1,0 +1,13 @@
+crontab (execute le script toutes les 15 minutes)
+script.sh (qui fait le rsync)
+on fait deux dossier dans /var/www/html/wordpress
+
+Pour rappel : le script s'execute depuis la machine admin/supervision
+dans un premier il se connecte en ssh au serveur A ensuite :
+il se connecte du serveur A au serveur B en tant qu'utilisateur apache en SSH, et lance une commande rsync.
+
+
+RESTE A FAIRE: eventuellement rajouter des regles d'exclusions.
+
+lire le man de rsync savoir comment faire une verif de la bon déroulement de la synchro.
+eventuellement faire un check if resultat = 0 sur la commande rsync ?
