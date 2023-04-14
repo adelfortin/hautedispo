@@ -11,3 +11,18 @@ RESTE A FAIRE: eventuellement rajouter des regles d'exclusions.
 
 lire le man de rsync savoir comment faire une verif de la bon déroulement de la synchro.
 eventuellement faire un check if resultat = 0 sur la commande rsync ?
+ sample de verif :
+ 
+ #!/bin/bash
+rsync -r -z -c /home/pi/queue root@server.mine.com:/home/foobar
+if [[ $? -gt 0 ]] 
+then
+   # take failure action here
+else
+   rm -rf rm /home/pi/queue/*
+   echo "Done"
+fi
+
+TOUJOURS RESTE A FAIRE:
+incorporer dans le megaplaybook machine0 le script la mise de la crontab, un fichier d'aliases pour l'execution automatique de la crontab
+un fichier sample html pour le test du bon fonctionement, et un un script d'execution du test.
