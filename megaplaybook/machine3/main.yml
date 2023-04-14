@@ -4,12 +4,9 @@ hosts: all
 become: true
 vars:
 ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
-adresse_ipv4_numero_zero: "192.168.83.3"
+adresse_ipv4_numero_zero: "192.168.82.3"
 interface_zero: "enp0s8"
-adresse_ipv4_numero_une: "192.168.82.3"
-interface_une: "enp0s9"
-adresse_de_passerelle_une: 192.168.83.2
-adresse_de_passerelle_deux: 192.168.82.1
+adresse_de_passerelle_une: 192.168.82.1
 adresse_dns_une: 10.156.32.33
 adresse_dns_deux: 10.154.59.104
 hostname_machine_une: "webserver1"
