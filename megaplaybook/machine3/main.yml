@@ -3,7 +3,7 @@
 hosts: all
 become: true
 vars:
-ancienne_adresse: "192.168.1.1"
+ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 adresse_ipv4_numero_zero: "192.168.83.3"
 interface_zero: "enp0s8"
 adresse_ipv4_numero_une: "192.168.82.3"
