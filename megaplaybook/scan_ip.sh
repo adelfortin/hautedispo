@@ -74,5 +74,10 @@ then
 break
 fi
 done
-
+}
+usage() {
+  nombre_iipv4
+  scan_adresses
+}
+usage  
 # Fermer
