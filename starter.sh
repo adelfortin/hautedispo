@@ -14,8 +14,17 @@ CHEMIN_DEPLOIEMENT="$REPERTOIRE_CIBLE/deploiement.yml"
 UTILISATEUR_ANSIBLE="root"
 MOT_DE_PASSE_ANSIBLE="master"
 
+#variable pour le proxy
+HTTP_PROXY="http://proxy.infra.dgfip:3128"
+
+# Mise en place du proxy pour dnf
+echo "proxy=$HTTP_PROXY" | sudo tee -a /etc/dnf/dnf.conf
+
 # Installation de Git et Ansible
 dnf install -y git ansible
+
+# Mise en place du proxy pour git
+git config --global http.proxy http://proxy.infra.dgfip:3128
 
 # Création du répertoire de déploiement
 mkdir -p "$REPERTOIRE_CIBLE"
