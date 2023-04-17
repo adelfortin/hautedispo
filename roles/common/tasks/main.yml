@@ -18,10 +18,10 @@ tasks:
     set_fact:
       host_index: "{{ groups['machine_sans_configuration'].index(ansible_hostname) }}"
       
-   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
-     ansible.builtin.file:
-       path: /root/.deploy
-       state: directory
+  - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
+    ansible.builtin.file:
+      path: /root/.deploy
+      state: directory
        
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
     ansible.builtin.copy:
@@ -33,26 +33,43 @@ tasks:
     ansible.builtin.command: chmod o+x /root/.deploy/configmachine{{ host_index }}.sh
     become: true
 
-    - name: Execute transformer_en_routeur.sh script
-      ansible.builtin.command: bash /root/.deploy/configmachine{{ host_index }}.sh
+  - name: Execute transformer_en_routeur.sh script
+    ansible.builtin.command: bash /root/.deploy/configmachine{{ host_index }}.sh
   
-   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
-     ansible.builtin.copy:
-       src: /root/.deploy/configssh{{ host_index }}
-       dest: /home/{{ ansible_facts.hostname }}/.ssh/config
-       remote_src: yes
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
+    ansible.builtin.copy:
+      src: /root/.deploy/configssh{{ host_index }}
+      dest: /home/{{ ansible_facts.hostname }}/.ssh/config
+      remote_src: yes
        
-   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE
-     ansible.builtin.copy:
-       src: /root/.deploy/.bashrc
-       dest: /home/{{ ansible_facts.hostname }}/.bashrc
-       remote_src: yes
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR L'UTILISATEUR
+    ansible.builtin.copy:
+      src: /root/.deploy/.bashrc
+      dest: /home/{{ ansible_facts.hostname }}/.bashrc
+      remote_src: yes
        
-   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE
-     ansible.builtin.copy:
-       src: /root/.deploy/agnoster.bash
-       dest: /home/{{ ansible_facts.hostname }}/.bash/themes/agnoster-bash/agnoster.bash
-       remote_src: yes
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR ROOT
+    ansible.builtin.copy:
+      src: /root/.deploy/.bashrc
+      dest: /root/.bashrc
+      remote_src: yes
+       
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR L'UTILISATEUR
+    ansible.builtin.copy:
+      src: /root/.deploy/agnoster.bash
+      dest: /home/{{ ansible_facts.hostname }}/.bash/themes/agnoster-bash/agnoster.bash
+      remote_src: yes
+       
+  - name: CREATION DES DOSSIERS POUR LE THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
+    ansible.builtin.file:
+      path: /root/.bash/themes/agnoster-bash
+      state: directory
+        
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
+    ansible.builtin.copy:
+      src: /root/.deploy/agnoster.bash
+      dest: /root/.bash/themes/agnoster-bash/agnoster.bash
+      remote_src: yes
 
   # Configuration et installation de DNF et EPEL
   - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
@@ -76,52 +93,12 @@ tasks:
     ansible.builtin.debug:
       var: username.stdout
 
-    - name: Copier les polices de caractère sur la machine
-      ansible.builtin.git:
-        repo: https://github.com/adelfortin/fontspowerline
-        dest: /home/{{ username.stdout }}/.fonts/ 
-        clone: yes
-        update: yes
+  - name: Copier les polices de caractère sur la machine
+    ansible.builtin.git:
+      repo: https://github.com/adelfortin/fontspowerline
+      dest: /home/{{ username.stdout }}/.fonts/ 
+      clone: yes
+      update: yes
 
-    - name: Installe les polices de caractères sur la machine
-      ansible.builtin.command: bash /home/{{ username.stdout }}/.fonts/install.sh
-
-    
-    - name: Installe les prompt personnalisé 
-      ansible.builtin.git:
-        repo: https://github.com/adelfortin/exportation
-        dest: /home/{{ username.stdout }}/.bash/themes/agnoster-bash/
-        clone: yes
-        update: yes
-          
-    - name: Execute transformer_en_routeur.sh script
-      ansible.builtin.command: chmod o+x /home/{{ username.stdout }}/.bash/themes/agnoster-bash/transformer_en_routeur.sh
-      become: true
-
-    - name: Execute transformer_en_routeur.sh script
-      ansible.builtin.command: bash /home/{{ username.stdout }}/.bash/themes/agnoster-bash/transformer_en_routeur.sh
-
-    - name: Enable IP forwarding
-      ansible.builtin.command: sysctl -p /etc/sysctl.d/forward.conf
-
-    - name: CREATION DES DOSSIERS POUR ROOT
-      ansible.builtin.file:
-        path: /root/.bash/themes/agnoster-bash
-        state: directory
-
-    - name: Déplace le fichier de configuation BASHRC au bon endroit
-      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc
-
-    - name: Installation du theme du prompt de root
-      ansible.builtin.command: cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/
-      
-    - name: Préparation du .bashrc de root
-      ansible.builtin.command: cp /home/{{ username.stdout }}/.bashrc /root/
-        
-    - name: CREATION DES DOSSIERS POUR LA CONFIG SSH
-      ansible.builtin.file:
-        path: home/{{ username.stdout }}/
-        state: directory
-        
-    - name: Déplace le fichier de configuation des connexions SSH au bon endroit
-      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.configrouteur /home/{{ username.stdout }}/.ssh/config
+  - name: Installe les polices de caractères sur la machine
+    ansible.builtin.command: bash /home/{{ username.stdout }}/.fonts/install.sh
