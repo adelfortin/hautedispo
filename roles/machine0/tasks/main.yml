@@ -60,55 +60,54 @@
       clone: yes
       update: yes
 
-      - name: Installe les polices de caractères sur la machine
-        command: "/bin/bash /home/{{ username.stdout }}/.fonts/install.sh"
+  - name: Installe les polices de caractères sur la machine
+    command: "/bin/bash /home/{{ username.stdout }}/.fonts/install.sh"
 
-      - name: Installe les prompt personnalisé 
-        git:
-          repo: https://github.com/adelfortin/exportation
-          dest:" /home/{{ username.stdout }}/.bash/themes/agnoster-bash/"
-          clone: yes
-          update: yes
+  - name: Installe les prompt personnalisé 
+    git:
+      repo: https://github.com/adelfortin/exportation
+      dest: "/home/{{ username.stdout }}/.bash/themes/agnoster-bash/"
+      clone: yes
+      update: yes
 
-      - name: Rend executable scan_ip.sh script
-        command: chmod o+x scan_ip.sh
+  - name: Rend executable scan_ip.sh script
+    command: chmod o+x scan_ip.sh
 
-      - name: Execute scan_ip.sh script
-        command: ./scan_ip.sh
+  - name: Execute scan_ip.sh script
+    command: ./scan_ip.sh
 
-      - name: Rend executable ssh_auto.sh script [A VERIFIER]
-        file:
-          path: ssh_auto.sh
-          mode: o=rwx
+  - name: Rend executable ssh_auto.sh script [A VERIFIER]
+    file:
+      path: ssh_auto.sh
+      mode: o=rwx
 
-      - name: Execute ssh_auto.sh script
-       command: ./ssh_auto.sh
+  - name: Execute ssh_auto.sh script
+    command: ./ssh_auto.sh
+  
+  - name: Rend executable modification_inventaire_ini.sh script
+    command: chmod o+x modification_inventaire_ini.sh
 
-      - name: Rend executable modification_inventaire_ini.sh script
-        command: chmod o+x modification_inventaire_ini.sh
-        become: true
+  - name: Execute modification_inventaire_ini.sh script
+    command: ./modification_inventaire_ini.sh
 
-      - name: Execute modification_inventaire_ini.sh script
-        command: ./modification_inventaire_ini.sh
+  - name: CREATION DES DOSSIERS POUR ROOT
+    file:
+      path: /root/.bash/themes/agnoster-bash
+      state: directory
 
-      - name: CREATION DES DOSSIERS POUR ROOT
-        file:
-          path: /root/.bash/themes/agnoster-bash
-          state: directory
+  - name: Déplace le fichier de configuation BASHRC au bon endroit
+    command: "mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc"
 
-      - name: Déplace le fichier de configuation BASHRC au bon endroit
-        command: "mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc"
-
-      - name: Installation du theme du prompt de root
-        command: "cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/"
+  - name: Installation du theme du prompt de root
+    command: "cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/"
       
-    - name: Préparation du .bashrc de root
-      command: "cp /home/{{ username.stdout }}/.bashrc /root/"
+  - name: Préparation du .bashrc de root
+    command: "cp /home/{{ username.stdout }}/.bashrc /root/"
         
-    - name: CREATION DES DOSSIERS POUR LA CONFIG SSH
-      file:
-        path: "home/{{ username.stdout }}/"
-        state: directory
+  - name: CREATION DES DOSSIERS POUR LA CONFIG SSH
+    file:
+      path: "home/{{ username.stdout }}/"
+      state: directory
         
-    - name: Déplace le fichier de configuation des connexions SSH au bon endroit
-      command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.config83 /home/{{ username.stdout }}/.ssh/config
+  - name: Déplace le fichier de configuation des connexions SSH au bon endroit
+    command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.config83 /home/{{ username.stdout }}/.ssh/config
