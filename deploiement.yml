@@ -1,30 +1,30 @@
 ---
 - name: Configuration en SSH de plusieurs machines pour un CMS hautement disponible
-hosts: connexion_local
-become: true
-vars:
-chemin_fichier_adresses_ipv4: "./adresse_ipv4.log"
-
-tasks:
-- name: Ajout des adresses IP dans l'inventaire.ini
-# Ce script exécute modification_de_inventaire.ini pour écrire les adresses IP dans l'inventaire.ini
-ansible.builtin.command: "./modification_de_inventaire.ini >> inventaire.ini"
-
----
-# configuration des éléments commun à tous les serveurs
-- name: INSTALL | Installation de tous les élèments commun à la machine local
-  hosts: all
   become: true
-  roles:
-    - machine0
-- name: Configuration des machines
-# Ce playbook exécute une série de tâches pour configurer les machines
-include_role:
-name: Installation à distance des diffèrents systèmes
-with_items:
-- { name: "machine1", hosts: "MACHINE_N°1" }
-- { name: "machine2", hosts: "MACHINE_N°2" }
-- { name: "machine3", hosts: "MACHINE_N°3" }
-- { name: "machine4", hosts: "MACHINE_N°4" }
-- { name: "machine5", hosts: "MACHINE_N°5" }
-- { name: "machine6", hosts: "MACHINE_N°6" }
+  vars:
+    chemin_fichier_adresses_ipv4: "./adresse_ipv4.log"
+  
+  tasks: 
+  - name: COMMON | Installation de tous les élèments commun aux hôtes
+    hosts: all
+    roles:
+      - common
+
+  # Ce script exécute modification_de_inventaire.ini pour écrire les adresses IP dans l'inventaire.ini
+  - name: Ajout des adresses IP dans l'inventaire.ini
+    hosts: local  # A modifier
+    command: "./modification_de_inventaire.ini >> inventaire.ini"
+  
+  - name:  Installation à distance des diffèrents systèmes
+    hosts: "{{ hosts }}"
+    roles:
+      - "{{ name }}"
+    with_items:
+    - { name: "machine0", hosts: "machine0" }
+    - { name: "machine1", hosts: "machine1" }
+    - { name: "machine2", hosts: "machine2" }
+    - { name: "machine3", hosts: "machine3" }
+    - { name: "machine4", hosts: "machine4" }
+    - { name: "machine5", hosts: "machine5" }
+    - { name: "machine6", hosts: "machine6" }
+
