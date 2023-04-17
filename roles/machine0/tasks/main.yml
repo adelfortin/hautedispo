@@ -1,6 +1,6 @@
 ---
 - name: Configure network and user settings
-hosts: all
+hosts: connection_local
 become: true
 vars:
   ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
