@@ -7,18 +7,14 @@
       ansible.builtin.command: whoami
       register: username
       become_user: "{{ ansible_facts.hostname }}"
-      
-    - name: Efface les configs de bash
-      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.bash
-    
-    - name: Efface les configs de fonts
-      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.fonts
 
-    - name: Efface les configs de bash root
-      ansible.builtin.command: rm -Rf /root/.bash
-    
-    - name: Efface le ficher .bashrc
-      ansible.builtin.command: rm -Rf /home/{{ username.stdout }}/.bashrc
-    
-    - name: Efface le fichier .bashrc de root
-      ansible.builtin.command: rm -Rf /root/.bashrc
+  - name: PROMPT DELETE | "{{ item.title }}"
+    command: "rm -Rf {{ item.path }}"
+    with_items:
+      - { title : "Efface les configs de bash", path : "/home/{{ username.stdout }}/.bash" }
+      - { title : "Efface les configs de fonts", path : "/home/{{ username.stdout }}/.fonts" }
+      - { title : "Efface les configs de bash root", path : "/root/.bash" }
+      - { title : "Efface le ficher .bashrc", path : "/home/{{ username.stdout }}/.bashrc" }
+      - { title : "Efface le fichier .bashrc de root", path : "/root/.bashrc" }
+    tags: prompt_delete
+
