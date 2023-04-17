@@ -23,5 +23,7 @@
 
 #### 17/04/2023
 
+- Ajout du dossier /roles/common/
 - Modification du deploiement.yml 
 - Modification du exportation.yml
+- Modification du suppression.yml
