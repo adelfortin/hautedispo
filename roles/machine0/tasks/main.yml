@@ -2,6 +2,7 @@
 - name: Configure network and user settings
 hosts: connection_local
 become: true
+
 vars:
   ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   adresse_ipv4_numero_zero: "192.168.83.1"
@@ -10,12 +11,13 @@ vars:
   adresse_dns_une: 10.156.32.33
   adresse_dns_deux: 10.154.59.104
   hostname_machine_une: "supervision"
+
 tasks:
   - name: Change le Hostname de la machine
-      ansible.builtin.command: hostnamectl set-hostname {{ hostname_machine_une }}
+      command: hostnamectl set-hostname {{ hostname_machine_une }}
 
   - name: Configure first interface
-    ansible.builtin.command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.addresses {{ adresse_ipv4_numero_zero }}/24 ipv4.gateway {{ adresse_de_passerelle_une }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
+    command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.addresses {{ adresse_ipv4_numero_zero }}/24 ipv4.gateway {{ adresse_de_passerelle_une }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
 
   - name: Create new user and generate SSH key
     ansible.builtin.user:
@@ -27,7 +29,7 @@ tasks:
       ssh_key_file: .ssh/id_rsa
 
   - name: Set password for new user
-    ansible.builtin.command: echo "{{ hostname_machine_une }}"|passwd --stdin {{ hostname_machine_une }}
+    command: echo "{{ hostname_machine_une }}"|passwd --stdin {{ hostname_machine_une }}
 
   # Configuration et installation de DNF et EPEL
     - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
@@ -48,66 +50,65 @@ tasks:
         become_user: "{{ ansible_facts.hostname }}"
 
     - name: vérifie que la valeur est bien enregistré
-      ansible.builtin.debug:
+      debug:
         var: username.stdout
 
     - name: Copier les polices de caractère sur la machine
-      ansible.builtin.git:
+      git:
         repo: https://github.com/adelfortin/fontspowerline
-        dest: /home/{{ username.stdout }}/.fonts/ 
+        dest: "/home/{{ username.stdout }}/.fonts/"
         clone: yes
         update: yes
 
     - name: Installe les polices de caractères sur la machine
-      ansible.builtin.command: bash /home/{{ username.stdout }}/.fonts/install.sh
-
+      command: "/bin/bash /home/{{ username.stdout }}/.fonts/install.sh"
     
     - name: Installe les prompt personnalisé 
-      ansible.builtin.git:
+      git:
         repo: https://github.com/adelfortin/exportation
-        dest: /home/{{ username.stdout }}/.bash/themes/agnoster-bash/
+        dest:" /home/{{ username.stdout }}/.bash/themes/agnoster-bash/"
         clone: yes
         update: yes
     
     - name: Rend executable scan_ip.sh script
-      ansible.builtin.command: chmod o+x scan_ip.sh
-      become: true
+      command: chmod o+x scan_ip.sh
 
     - name: Execute scan_ip.sh script
-      ansible.builtin.command: ./scan_ip.sh
+      command: ./scan_ip.sh
       
-    - name: Rend executable ssh_auto.sh script
-      ansible.builtin.command: chmod o+x ssh_auto.sh
-      become: true
+    - name: Rend executable ssh_auto.sh script [A VERIFIER]
+      file:
+        path: ssh_auto.sh
+        mode: o=rwx
 
     - name: Execute ssh_auto.sh script
-      ansible.builtin.command: ./ssh_auto.sh
+     command: ./ssh_auto.sh
       
     - name: Rend executable modification_inventaire_ini.sh script
-      ansible.builtin.command: chmod o+x modification_inventaire_ini.sh
+      command: chmod o+x modification_inventaire_ini.sh
       become: true
 
     - name: Execute modification_inventaire_ini.sh script
-      ansible.builtin.command: ./modification_inventaire_ini.sh
+      command: ./modification_inventaire_ini.sh
 
     - name: CREATION DES DOSSIERS POUR ROOT
-      ansible.builtin.file:
+      file:
         path: /root/.bash/themes/agnoster-bash
         state: directory
 
     - name: Déplace le fichier de configuation BASHRC au bon endroit
-      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc
+      command: "mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc"
 
     - name: Installation du theme du prompt de root
-      ansible.builtin.command: cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/
+      command: "cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/"
       
     - name: Préparation du .bashrc de root
-      ansible.builtin.command: cp /home/{{ username.stdout }}/.bashrc /root/
+      command: "cp /home/{{ username.stdout }}/.bashrc /root/"
         
     - name: CREATION DES DOSSIERS POUR LA CONFIG SSH
-      ansible.builtin.file:
-        path: home/{{ username.stdout }}/
+      file:
+        path: "home/{{ username.stdout }}/"
         state: directory
         
     - name: Déplace le fichier de configuation des connexions SSH au bon endroit
-      ansible.builtin.command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.config83 /home/{{ username.stdout }}/.ssh/config
+      command: mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.config83 /home/{{ username.stdout }}/.ssh/config
