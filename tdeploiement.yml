@@ -10,16 +10,18 @@ tasks:
 # Ce script exécute modification_de_inventaire.ini pour écrire les adresses IP dans l'inventaire.ini
 ansible.builtin.command: "./modification_de_inventaire.ini >> inventaire.ini"
 
-- name: Génération des clés SSH
-# Cette commande exécute ssh-keygen pour générer des clés SSH
-ansible.builtin.command: ssh-keygen
-
+---
+# configuration des éléments commun à tous les serveurs
+- name: INSTALL | Installation de tous les élèments commun à la machine local
+  hosts: all
+  become: true
+  roles:
+    - machine0
 - name: Configuration des machines
 # Ce playbook exécute une série de tâches pour configurer les machines
 include_role:
-name: system
+name: Installation à distance des diffèrents systèmes
 with_items:
-- { name: "machine0", hosts: "connexion_local" }
 - { name: "machine1", hosts: "MACHINE_N°1" }
 - { name: "machine2", hosts: "MACHINE_N°2" }
 - { name: "machine3", hosts: "MACHINE_N°3" }
