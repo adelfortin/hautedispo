@@ -17,4 +17,7 @@
 
 ## Changelog 
 
-- Modification du deploiement.yml 17/04/2023
+#### 17/04/2023
+
+- Modification du deploiement.yml 
+- Modification du exportation.yml
