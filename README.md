@@ -15,15 +15,13 @@
 
 <br />
 
-## Todo
-
-- 
-
 ## Changelog 
 
 #### 17/04/2023
 
 - Ajout du dossier /roles/common/
+- Ajout du fichier /vars/supervision.yml
 - Modification du deploiement.yml 
 - Modification du exportation.yml
 - Modification du suppression.yml
+- Déplacement du fichier TODO dans /roles/rsync/TODO
