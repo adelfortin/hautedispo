@@ -1,106 +1,106 @@
 ---
 - name: Configure network and user settings
-hosts: connection_local
-become: true
+  hosts: connection_local
+  become: true
 
-vars:
-  ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
-  adresse_ipv4_numero_zero: "192.168.83.1"
-  interface_zero: "enp0s8"
-  adresse_de_passerelle_une: 192.168.83.2
-  adresse_dns_une: 10.156.32.33
-  adresse_dns_deux: 10.154.59.104
-  hostname_machine_une: "supervision"
+  vars:
+    ancienne_adresse: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    adresse_ipv4_numero_zero: "192.168.83.1"
+    interface_zero: "enp0s8"
+    adresse_de_passerelle_une: 192.168.83.2
+    adresse_dns_une: 10.156.32.33
+    adresse_dns_deux: 10.154.59.104
+    hostname_machine_une: "supervision"
 
-tasks:
-  - name: Change le Hostname de la machine
-      command: hostnamectl set-hostname {{ hostname_machine_une }}
+  tasks:
+    - name: Change le Hostname de la machine
+        command: hostnamectl set-hostname {{ hostname_machine_une }}
 
-  - name: Configure first interface
-    command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.addresses {{ adresse_ipv4_numero_zero }}/24 ipv4.gateway {{ adresse_de_passerelle_une }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
+    - name: Configure first interface
+      command: nmcli connection add type ethernet con-name INTERNET ifname {{ interface_zero }} ipv4.addresses {{ adresse_ipv4_numero_zero }}/24 ipv4.gateway {{ adresse_de_passerelle_une }} ipv4.dns  "{{ adresse_dns_une }},{{ adresse_dns_deux }}" ipv4.method manual
 
-  - name: Create new user and generate SSH key
-    ansible.builtin.user:
-      name: "{{ hostname_machine_une }}"
-      shell: /bin/bash
-      groups: "{{ hostname_machine_une }},wheel"
-      generate_ssh_key: yes
-      ssh_key_bits: 2048
-      ssh_key_file: .ssh/id_rsa
+    - name: Create new user and generate SSH key
+      ansible.builtin.user:
+        name: "{{ hostname_machine_une }}"
+        shell: /bin/bash
+        groups: "{{ hostname_machine_une }},wheel"
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
 
-  - name: Set password for new user
-    command: echo "{{ hostname_machine_une }}"|passwd --stdin {{ hostname_machine_une }}
+    - name: Set password for new user
+      command: echo "{{ hostname_machine_une }}"|passwd --stdin {{ hostname_machine_une }}
 
-  # Configuration et installation de DNF et EPEL
-    - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
-      lineinfile:
-        path: /etc/dnf/dnf.conf
-        line: proxy=http://proxy.infra.dgfip:3128
+    # Configuration et installation de DNF et EPEL
+      - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
+        lineinfile:
+          path: /etc/dnf/dnf.conf
+          line: proxy=http://proxy.infra.dgfip:3128
 
-    - name: INSTALL git
-      dnf:
-        name: git
+      - name: INSTALL git
+        dnf:
+          name: git
 
-    - name: CONFIG LE PROXY POUR GITHUB
-      ansible.builtin.command: git config --global http.proxy http://proxy.infra.dgfip:3128
+      - name: CONFIG LE PROXY POUR GITHUB
+        ansible.builtin.command: git config --global http.proxy http://proxy.infra.dgfip:3128
 
-    - name: Récupére l'utilisateur courant
-      ansible.builtin.command: whoami
-        register: username
-        become_user: "{{ ansible_facts.hostname }}"
+      - name: Récupére l'utilisateur courant
+        ansible.builtin.command: whoami
+          register: username
+          become_user: "{{ ansible_facts.hostname }}"
 
-    - name: vérifie que la valeur est bien enregistré
-      debug:
-        var: username.stdout
+      - name: vérifie que la valeur est bien enregistré
+        debug:
+          var: username.stdout
 
-    - name: Copier les polices de caractère sur la machine
-      git:
-        repo: https://github.com/adelfortin/fontspowerline
-        dest: "/home/{{ username.stdout }}/.fonts/"
-        clone: yes
-        update: yes
+      - name: Copier les polices de caractère sur la machine
+        git:
+          repo: https://github.com/adelfortin/fontspowerline
+          dest: "/home/{{ username.stdout }}/.fonts/"
+          clone: yes
+          update: yes
 
-    - name: Installe les polices de caractères sur la machine
-      command: "/bin/bash /home/{{ username.stdout }}/.fonts/install.sh"
-    
-    - name: Installe les prompt personnalisé 
-      git:
-        repo: https://github.com/adelfortin/exportation
-        dest:" /home/{{ username.stdout }}/.bash/themes/agnoster-bash/"
-        clone: yes
-        update: yes
-    
-    - name: Rend executable scan_ip.sh script
-      command: chmod o+x scan_ip.sh
+      - name: Installe les polices de caractères sur la machine
+        command: "/bin/bash /home/{{ username.stdout }}/.fonts/install.sh"
 
-    - name: Execute scan_ip.sh script
-      command: ./scan_ip.sh
-      
-    - name: Rend executable ssh_auto.sh script [A VERIFIER]
-      file:
-        path: ssh_auto.sh
-        mode: o=rwx
+      - name: Installe les prompt personnalisé 
+        git:
+          repo: https://github.com/adelfortin/exportation
+          dest:" /home/{{ username.stdout }}/.bash/themes/agnoster-bash/"
+          clone: yes
+          update: yes
 
-    - name: Execute ssh_auto.sh script
-     command: ./ssh_auto.sh
-      
-    - name: Rend executable modification_inventaire_ini.sh script
-      command: chmod o+x modification_inventaire_ini.sh
-      become: true
+      - name: Rend executable scan_ip.sh script
+        command: chmod o+x scan_ip.sh
 
-    - name: Execute modification_inventaire_ini.sh script
-      command: ./modification_inventaire_ini.sh
+      - name: Execute scan_ip.sh script
+        command: ./scan_ip.sh
 
-    - name: CREATION DES DOSSIERS POUR ROOT
-      file:
-        path: /root/.bash/themes/agnoster-bash
-        state: directory
+      - name: Rend executable ssh_auto.sh script [A VERIFIER]
+        file:
+          path: ssh_auto.sh
+          mode: o=rwx
 
-    - name: Déplace le fichier de configuation BASHRC au bon endroit
-      command: "mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc"
+      - name: Execute ssh_auto.sh script
+       command: ./ssh_auto.sh
 
-    - name: Installation du theme du prompt de root
-      command: "cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/"
+      - name: Rend executable modification_inventaire_ini.sh script
+        command: chmod o+x modification_inventaire_ini.sh
+        become: true
+
+      - name: Execute modification_inventaire_ini.sh script
+        command: ./modification_inventaire_ini.sh
+
+      - name: CREATION DES DOSSIERS POUR ROOT
+        file:
+          path: /root/.bash/themes/agnoster-bash
+          state: directory
+
+      - name: Déplace le fichier de configuation BASHRC au bon endroit
+        command: "mv /home/{{ username.stdout }}/.bash/themes/agnoster-bash/.bashrc /home/{{ username.stdout }}/.bashrc"
+
+      - name: Installation du theme du prompt de root
+        command: "cp -f /home/{{ username.stdout }}/.bash/themes/agnoster-bash/agnoster.bash /root/.bash/themes/agnoster-bash/"
       
     - name: Préparation du .bashrc de root
       command: "cp /home/{{ username.stdout }}/.bashrc /root/"
