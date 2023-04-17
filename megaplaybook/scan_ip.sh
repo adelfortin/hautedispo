@@ -76,7 +76,7 @@ fi
 done
 }
 usage() {
-  nombre_iipv4
+  nombre_ipv4
   scan_adresses
 }
 usage  
