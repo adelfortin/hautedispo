@@ -41,26 +41,4 @@
 
   - name: Execute transformer_en_routeur.sh script
     ansible.builtin.command: bash /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
-    
-- name: LANCEMENT DE LA SECONDE PARTIE DE L'INSTALLATION
-  - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
-    hosts: connexion_local
-    connection: local
-    ansible.builtin.file:
-      path: /home/{{ ansible_facts.hostname }}/.CMS
-      state: directory
-      
-  - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
-    hosts: connexion_local
-    connection: local
-    ansible.builtin.git:
-    repo: https://github.com/SHaddow7/CMS-HAUTE-DISPO-GROUPE7
-    dest: /home/{{ ansible_facts.hostname }}/.CMS 
-    clone: yes
-    update: yes
-      
-  - name: Execute transformer_en_routeur.sh script
-    hosts: connexion_local
-    connection: local
-    ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
 
