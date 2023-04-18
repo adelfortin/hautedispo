@@ -1,5 +1,6 @@
 ---
 - name: Configure network and user settings
+  hosts: machine_sans_configuration
   become: true
   tasks:
     - name: Determine index of current host
