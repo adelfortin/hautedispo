@@ -78,7 +78,7 @@
         line: proxy=http://proxy.infra.dgfip:3128
 
     - name: INSTALL git
-        dnf:
+      dnf:
         name: git
 
     - name: CONFIG LE PROXY POUR GITHUB
