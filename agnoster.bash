@@ -1152,7 +1152,7 @@ else
 	COLOR_LINE_3="GoldRodLine3"
 	COLOR_LINE_4="GoldRodLine4"
 	;;
-	client)
+	admin)
 	COLOR_0="CreamCoffeeUser0"
 	COLOR_1="CreamCoffeeUser1"
 	COLOR_2="CreamCoffeeUser2"
@@ -1164,6 +1164,29 @@ else
 	COLOR_LINE_3="CreamCoffeeLine3"
 	COLOR_LINE_4="CreamCoffeeLine4"
 	;;
+	client)
+	COLOR_0="BeautifulBrownUser0"
+	COLOR_1="BeautifulBrownUser1"
+	COLOR_2="BeautifulBrownUser2"
+	COLOR_3="BeautifulBrownUser3"
+	COLOR_4="BeautifulBrownUser4"
+	COLOR_LINE_0="BeautifulBrownLine0"
+	COLOR_LINE_1="BeautifulBrownLine1"
+	COLOR_LINE_2="BeautifulBrownLine2"
+	COLOR_LINE_3="BeautifulBrownLine3"
+	COLOR_LINE_4="BeautifulBrownLine4"
+	;;
+	adel)
+	COLOR_0="AestheticUser0"
+	COLOR_1="AestheticUser1"
+	COLOR_2="AestheticUser2"
+	COLOR_3="AestheticUser3"
+	COLOR_4="AestheticUser4"
+	COLOR_LINE_0="AestheticLine0"
+	COLOR_LINE_1="AestheticLine1"
+	COLOR_LINE_2="AestheticLine2"
+	COLOR_LINE_3="AestheticLine3"
+	COLOR_LINE_4="AestheticLine4"
 	haproxyserver)
 	COLOR_0="ArcDarkUser0"
 	COLOR_1="ArcDarkUser1"
@@ -1175,6 +1198,18 @@ else
 	COLOR_LINE_2="ArcDarkLine2"
 	COLOR_LINE_3="ArcDarkLine3"
 	COLOR_LINE_4="ArcDarkLine4"
+	;;
+	routeur)
+	COLOR_0="ShadesofTealUser0"
+	COLOR_1="ShadesofTealUser1"
+	COLOR_2="ShadesofTealUser2"
+	COLOR_3="ShadesofTealUser3"
+	COLOR_4="ShadesofTealUser4"
+	COLOR_LINE_0="ShadesofTealLine0"
+	COLOR_LINE_1="ShadesofTealLine1"
+	COLOR_LINE_2="ShadesofTealLine2"
+	COLOR_LINE_3="ShadesofTealLine3"
+	COLOR_LINE_4="ShadesofTealLine4"
 	;;
 	root)
 	COLOR_0="RedUser0"
