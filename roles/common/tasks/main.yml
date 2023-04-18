@@ -1,6 +1,5 @@
 ---
 - name: Configure network and user settings
-  hosts: all
   become: true
   tasks:
     - name: Determine index of current host
