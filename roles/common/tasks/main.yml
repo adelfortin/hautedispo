@@ -1,7 +1,6 @@
 ---
 - name: Configure network and user settings
   hosts: machine_sans_configuration
-  gather_facts: true
   become: true
   
   tasks:
