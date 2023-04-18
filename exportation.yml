@@ -21,7 +21,7 @@
     dnf:
       name: git
 
-  - name: Configuration du proxy gir
+  - name: Configuration du proxy git
     command: "git config --global http.proxy {{ http_proxy }}"
 
   - name: Récupére l'utilisateur courant
