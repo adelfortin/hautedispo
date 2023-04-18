@@ -1,61 +1,51 @@
 ---
 - name: Configuration en SSH de plusieurs machines pour un CMS hautement disponible
+  hosts: connexion_local
+  connection: local
   become: true
   vars:
     chemin_fichier_adresses_ipv4: "./adresse_ipv4.log"
   
   tasks:
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
-    hosts: connexion_local
-    connection: local
     ansible.builtin.command: chmod o+x /root/.deploy/scan_ip.sh
     become: true
 
   - name: EXECUTE LE SCRIPT DE SCANNAGE DES IPS DU RESEAU
-    hosts: connexion_local
-    connection: local
     ansible.builtin.command: bash /root/.deploy/scan_ip.sh
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
-    hosts: connexion_local
-    connection: local
     ansible.builtin.command: chmod o+x /root/.deploy/ssh_auto.sh
     become: true
 
   - name: EXECUTE LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
-    hosts: connexion_local
-    connection: local
     ansible.builtin.command: bash /root/.deploy/ssh_auto.sh
     
-  - name: COMMON | Installation de tous les élèments commun aux hôtes
-    hosts: all
-    roles:
-      - common
+- name: COMMON | Installation de tous les élèments commun aux hôtes
+  hosts: all
+  roles:
+    - common
  
+- name: TRANSFORMATION EN ROUTEUR DE LA MACHINE UNE
+  hosts: machine1
+  tasks:
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
       src: /root/.deploy/transformer_en_routeur.sh
       dest: /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
       remote_src: yes
-    roles:
-      - machine1
       
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: chmod o+x /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
     become: true
-    roles:
-      - machine1
 
   - name: Execute transformer_en_routeur.sh script
     ansible.builtin.command: bash /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
-    roles:
-      - machine1
-
-  
-  - name:  Installation à distance des diffèrents systèmes
-    hosts: "{{ hosts }}"
-    roles:
     
+- name: LANCEMENT DE LA SECONDE PARTIE DE L'INSTALLATION
+  hosts: connexion_local
+  connection: local
+  tasks:
   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
     hosts: connexion_local
     connection: local
