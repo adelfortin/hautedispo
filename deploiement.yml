@@ -6,17 +6,25 @@
   
   tasks:
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
+    hosts: connexion_local
+    connection: local
     ansible.builtin.command: chmod o+x /root/.deploy/scan_ip.sh
     become: true
 
-  - name: Execute transformer_en_routeur.sh script
+  - name: EXECUTE LE SCRIPT DE SCANNAGE DES IPS DU RESEAU
+    hosts: connexion_local
+    connection: local
     ansible.builtin.command: bash /root/.deploy/scan_ip.sh
     
-  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
+    hosts: connexion_local
+    connection: local
     ansible.builtin.command: chmod o+x /root/.deploy/ssh_auto.sh
     become: true
 
-  - name: Execute transformer_en_routeur.sh script
+  - name: EXECUTE LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
+    hosts: connexion_local
+    connection: local
     ansible.builtin.command: bash /root/.deploy/ssh_auto.sh
     
   - name: COMMON | Installation de tous les élèments commun aux hôtes
@@ -47,13 +55,4 @@
   - name:  Installation à distance des diffèrents systèmes
     hosts: "{{ hosts }}"
     roles:
-      - "{{ name }}"
-    with_items:
-    - { name: "machine0", hosts: "machine0" }
-    - { name: "machine1", hosts: "machine1" }
-    - { name: "machine2", hosts: "machine2" }
-    - { name: "machine3", hosts: "machine3" }
-    - { name: "machine4", hosts: "machine4" }
-    - { name: "machine5", hosts: "machine5" }
-    - { name: "machine6", hosts: "machine6" }
 
