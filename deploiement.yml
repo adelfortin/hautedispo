@@ -22,7 +22,7 @@
     ansible.builtin.command: bash /root/.deploy/ssh_auto.sh
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
-  hosts: all
+  hosts: machine_sans_configuration
   roles:
     - common
  
