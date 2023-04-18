@@ -86,8 +86,8 @@
 
     - name: Récupére l'utilisateur courant
       ansible.builtin.command: whoami
-        register: username
-        become_user: "{{ ansible_facts.hostname }}"
+      register: username
+      become_user: "{{ ansible_facts.hostname }}"
 
     - name: vérifie que la valeur est bien enregistré
       ansible.builtin.debug:
