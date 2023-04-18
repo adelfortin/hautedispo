@@ -1,0 +1,63 @@
+Host haproxy
+Hostname 192.168.83.2
+User haproxyserver
+Port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2242 localhost:22
+
+Host supervision
+Hostname 192.168.83.1
+User supervision
+Port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2242 localhost:22
+
+Host client
+Hostname 192.168.84.6
+User client
+Port 22
+
+Host routeur
+Hostname 192.168.84.1
+User routeur
+Port 22
+
+Host admin
+Hostname 192.168.84.3
+User admin
+Port 22
+
+Host bdd1
+Hostname 192.168.82.4
+User dbserver1
+Port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2243 localhost:22
+
+
+Host bdd2
+Hostname 192.168.82.5
+User dbserver2
+Port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2244 localhost:22
+
+HOST web1
+Hostname 192.168.82.2
+User webserver1
+Port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2245 localhost:22
+
+HOST web2
+Hostname 192.168.82.3
+User webserver2
+port 22
+ForwardAgent yes
+ProxyJump root@192.168.84.1
+LocalForward 2242 localhost:22
