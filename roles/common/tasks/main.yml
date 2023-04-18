@@ -3,6 +3,6 @@
   hosts: all
   become: true
   tasks:
-    - name: Determine index of current host
-      set_fact:
-        host_index: "{{ groups['machine_sans_configuration'].index(ansible_hostname) }}"
+  - name: Determine index of current host
+    set_fact:
+      host_index: "{{ groups['machine_sans_configuration'].index(ansible_hostname) }}"
