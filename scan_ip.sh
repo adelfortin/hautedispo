@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Obtenir l'adresse IP de la machine en cours d'exécution
-ip=$(hostname -I | awk '{print $1}')
+# Définir le nom de l'interface à scanner
+INTERFACE="enp0s8"
+
+# Obtenir l'adresse IP de l'interface
+ip=$(ip addr show dev $INTERFACE | grep "inet " | awk '{print $2}' | cut -d/ -f1)
 
 # Stocker l'adresse IP dans une variable liée
 IP_MACHINE=$ip
@@ -71,10 +74,10 @@ fi
 fi
 
 # Vérifier si le nombre maximum d'adresses a été atteint
-if [ $i -ge $NOMBRE_IP ] 
+if [ $i -ge $NOMBRE_IP ]
 then
 # Si le nombre maximum a été atteint, sortir de la boucle
-echo "Le script e script a essayé tout les adresses possibles"
+echo "Le script a essayé tout les adresses possibles"
 break
 elif [ $i -ge $nombre_personalise ]
 then
