@@ -43,9 +43,6 @@
     ansible.builtin.command: bash /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
     
 - name: LANCEMENT DE LA SECONDE PARTIE DE L'INSTALLATION
-  hosts: connexion_local
-  connection: local
-  tasks:
   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
     hosts: connexion_local
     connection: local
