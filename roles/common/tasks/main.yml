@@ -20,7 +20,6 @@
 
     - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
       ansible.builtin.command: chmod o+x /root/.deploy/configmachine{{ host_index }}.sh
-      become: true
 
     - name: Execute transformer_en_routeur.sh script
       ansible.builtin.command: bash /root/.deploy/configmachine{{ host_index }}.sh
@@ -85,7 +84,7 @@
     - name: Copier les polices de caractère sur la machine
       ansible.builtin.git:
         repo: https://github.com/adelfortin/fontspowerline
-        dest: /home/{{ username.stdout }}/.fonts/ 
+        dest: /home/{{ username.stdout }}/.fonts/
         clone: yes
         update: yes
 
