@@ -3,6 +3,7 @@
   hosts: machine_sans_configuration
   gather_facts: true
   become: true
+  
   tasks:
     - name: Determine index of current host
       set_fact:
