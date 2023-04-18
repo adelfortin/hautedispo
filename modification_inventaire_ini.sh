@@ -9,7 +9,6 @@ declare -i I=0
 
 # Modification du fichier INVENTAIRE.INI avant de commencer la boucle
 echo -e "\n[machine_sans_configuration]" >> "$INVENTAIRE_INI"
-echo "machine0 ansible_host=127.0.0.1" >> "$INVENTAIRE_INI"
 
 # Add machine1 and machine7 to the [routeurs] group
 echo -e "\n[routeurs]" >> "$INVENTAIRE_INI"
