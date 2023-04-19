@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Variables liées en majuscules
-REPO_GIT="https://github.com/SHaddow7/CMS-HAUTE-DISPO-GROUPE7"
+REPO_GIT="https://github.com/SHaddow7/hautedispo"
 REPERTOIRE_CIBLE="/root/.deploy/relai/"
 DOSSIER_REPO="CMS-HAUTE-DISPO-GROUPE7"
 DOSSIER_RUDY="Rudy - Configuration Web"
 DOSSIER_DEPLOIEMENT="deploiements"
 DERNIERE_VERSION="deploiement.v4.3"
-CHEMIN_COMPLET="$REPERTOIRE_CIBLE/$DOSSIER_REPO/$DOSSIER_RUDY/$DOSSIER_DEPLOIEMENT/$DERNIERE_VERSION"
+CHEMIN_COMPLET="$REPO_GIT"
 CHEMIN_INVENTAIRE="$CHEMIN_COMPLET/inventaire.ini"
 CHEMIN_DEPLOIEMENT="$CHEMIN_COMPLET/setup-machines.yml"
 
