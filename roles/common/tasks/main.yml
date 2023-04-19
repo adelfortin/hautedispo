@@ -4,6 +4,7 @@
       machine: "machine{{ host_index }}"
     when: "'ansible_hostname' == item"
     loop: "groups['machine_sans_configuration']"
+    wantlist: true
     loop_control:
       index_var: host_index
       
