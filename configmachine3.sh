@@ -34,10 +34,18 @@ exit 1
 fi
 
 # Création de la première connexion
-if nmcli connection add type ethernet con-name réseau82 ifname $INTERFACE_1 ipv4.addresses $IPV4_1 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual ; then
+if nmcli connection add type ethernet con-name reseau82 ifname $INTERFACE_1 ipv4.addresses $IPV4_1 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual ; then
 	echo "La première connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la première connexion." >&2
+exit 1
+fi
+
+# Création du groupe
+if groupadd $UTILISATEUR ; then
+	echo "Le groupe $UTILISATEUR a été correctement créé."
+else
+	echo "Erreur : Impossible de créer le groupe $UTILISATEUR." >&2
 exit 1
 fi
 
