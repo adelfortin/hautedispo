@@ -2,14 +2,14 @@
   - name: Set machine facts
     set_fact:
       machine: "machine{{ host_index }}"
-    when: ansible_hostname == item
+    when: inventory_hostname == item
     loop: "{{ groups['machine_sans_configuration'] }}"
     loop_control:
       index_var: host_index
       
   - name: Debug
     debug: 
-      msg: "{{ machine }}"
+      msg: machine
 
   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
     ansible.builtin.file:
