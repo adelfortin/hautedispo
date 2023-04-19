@@ -20,6 +20,12 @@
     ansible.builtin.copy:
       src: /root/.deploy/config{{ machine }}.sh
       dest: /root/.deploy/config{{ machine }}.sh
+      
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
+    ansible.builtin.copy:
+      src: /root/.deploy/configssh{{ machine }}
+      dest: /root/.deploy/config
+    become: true
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: chmod o+x /root/.deploy/config{{ machine }}.sh
@@ -29,71 +35,12 @@
     ansible.builtin.command: bash /root/.deploy/config{{ machine }}.sh
     become: true
 
-  - name: CREATION DES DOSSIERS POUR LE LES CONFIGS SSH
-    ansible.builtin.file:
-      path: /home/{{ ansible_facts.hostname }}/.ssh
-      state: directory
-    become: true
-      
-  - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
-    ansible.builtin.copy:
-      src: /root/.deploy/configssh{{ machine }}
-      dest: /home/{{ ansible_facts.hostname }}/.ssh/config
-    become: true
-
-  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR L'UTILISATEUR
-    ansible.builtin.copy:
-      src: /root/.deploy/.bashrc
-      dest: /home/{{ machine }}/.bashrc
-
-  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR ROOT
-    ansible.builtin.copy:
-      src: /root/.deploy/.bashrc
-      dest: /root/.bashrc
-
-  - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR L'UTILISATEUR
-    ansible.builtin.copy:
-      src: /root/.deploy/agnoster.bash
-      dest: /home/{{ machine }}/.bash/themes/agnoster-bash/agnoster.bash
-
-  - name: CREATION DES DOSSIERS POUR LE THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
-    ansible.builtin.file:
-      path: /root/.bash/themes/agnoster-bash
-      state: directory
-
-  - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
-    ansible.builtin.copy:
-      src: /root/.deploy/agnoster.bash
-      dest: /root/.bash/themes/agnoster-bash/agnoster.bash
-
   # Configuration et installation de DNF et EPEL
   - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
     lineinfile:
       path: /etc/dnf/dnf.conf
       line: proxy=http://proxy.infra.dgfip:3128
-
-  - name: INSTALL git
+      
+  - name: INSTALL powerline-fonts
     dnf:
-      name: git
-
-  - name: CONFIG LE PROXY POUR GITHUB
-    ansible.builtin.command: git config --global http.proxy http://proxy.infra.dgfip:3128
-
-  - name: Récupére l'utilisateur courant
-    ansible.builtin.command: whoami
-    register: username
-    become_user: "{{ ansible_facts.hostname }}"
-
-  - name: vérifie que la valeur est bien enregistré
-    ansible.builtin.debug:
-      var: username.stdout
-
-  - name: Copier les polices de caractère sur la machine
-    ansible.builtin.git:
-      repo: https://github.com/adelfortin/fontspowerline
-      dest: /home/{{ username.stdout }}/.fonts/
-      clone: yes
-      update: yes
-
-  - name: Installe les polices de caractères sur la machine
-    ansible.builtin.command: bash /home/{{ machine }}/.fonts/install.sh
+      name: poowerline-fonts
