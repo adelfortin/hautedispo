@@ -41,7 +41,3 @@
       path: /etc/dnf/dnf.conf
       line: proxy=http://proxy.infra.dgfip:3128
     become: true
-      
-  - name: INSTALL powerline-fonts
-    dnf:
-      name: poowerline-fonts
