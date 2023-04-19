@@ -44,7 +44,7 @@
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR L'UTILISATEUR
     ansible.builtin.copy:
       src: /root/.deploy/.bashrc
-      dest: /home/{{ ansible_facts.hostname }}/.bashrc
+      dest: /home/{{ machine }}/.bashrc
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR ROOT
     ansible.builtin.copy:
@@ -54,7 +54,7 @@
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR L'UTILISATEUR
     ansible.builtin.copy:
       src: /root/.deploy/agnoster.bash
-      dest: /home/{{ ansible_facts.hostname }}/.bash/themes/agnoster-bash/agnoster.bash
+      dest: /home/{{ machine }}/.bash/themes/agnoster-bash/agnoster.bash
 
   - name: CREATION DES DOSSIERS POUR LE THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
     ansible.builtin.file:
@@ -96,4 +96,4 @@
       update: yes
 
   - name: Installe les polices de caractères sur la machine
-    ansible.builtin.command: bash /home/{{ username.stdout }}/.fonts/install.sh
+    ansible.builtin.command: bash /home/{{ machine }}/.fonts/install.sh
