@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # VARIABLES BOUND : on définit les noms de fichiers dans des variables
-ADRESSE_IPV4_LOG="adresse_ipv4.log"
-INVENTAIRE_INI="inventaire.ini"
+ADRESSE_IPV4_LOG="/root/.deplou/adresse_ipv4.log"
+INVENTAIRE_INI="/root/.deploy/inventaire.ini"
 
 # VARIABLE BOUND : on initialise la variable I à 0 pour compter le nombre d'adresses IP traitées
 declare -i I=0
