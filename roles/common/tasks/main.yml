@@ -22,10 +22,10 @@
       remote_src: yes
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
-    ansible.builtin.command: chmod o+x /root/.deploy/configmachine{{ machine }}.sh
+    ansible.builtin.command: chmod o+x /root/.deploy/config{{ machine }}.sh
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root/.deploy/configmachine{{ machine }}.sh
+    ansible.builtin.command: bash /root/.deploy/config{{ machine }}.sh
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
