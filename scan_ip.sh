@@ -65,7 +65,7 @@ if ping -c 1 -w 1 $adresse > /dev/null
 then
 # Si la réponse est positive, incrémenter le compteur et écrire dans le fichier
 i=$(expr $i + 1)
-echo "$i:$adresse" >&3
+echo "$adresse" >&3
 echo "Adress $adresse a répondu au ping." >> log.txt
 else
 # Sinon, ne rien faire
