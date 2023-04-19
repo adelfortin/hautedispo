@@ -2,7 +2,7 @@
   - name: Set machine facts
     set_fact:
       machine: "machine{{ host_index }}"
-    when: "'{{ ansible_hostname }}' in item"
+    when: "'{{ ansible_hostname }}' == item"
     loop: "{{ groups['machine_sans_configuration'] }}"
     loop_control:
       index_var: host_index
