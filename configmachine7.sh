@@ -15,7 +15,7 @@
 # - INTERFACE_4 : le nom la quatrième interface utilisée dans le cadre de notre architecture réseau
 
 UTILISATEUR="routeur"
-IPV4_3="192.168.84.1/24"
+IPV4_1="192.168.84.1/24"
 INTERFACE_1="enp0s8"
 INTERFACE_2="enp0s9"
 SUDOERS_FILE=/etc/sudoers
