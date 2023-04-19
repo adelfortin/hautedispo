@@ -3,9 +3,12 @@
     debug: 
       msg: "{{ groups['machine_sans_configuration'] }}"
       
-  - name: Determine index of current host
-    set_fact:
-      host_index: "{{ groups['machine_sans_configuration'].index(ansible_hostname) }}"
+  - name: Set machine facts
+  set_fact:
+    machine: "machine{{ index }}"
+  loop: "{{ range(0, groups['machine_sans_configuration']|length) }}"
+  loop_control:
+    index_var: index
 
   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
     ansible.builtin.file:
@@ -14,19 +17,19 @@
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
     ansible.builtin.copy:
-      src: /root/.deploy/configmachine{{ host_index }}.sh
-      dest: /root/.deploy/configmachine{{ host_index }}.sh
+      src: /root/.deploy/configmachine{{ machine }}.sh
+      dest: /root/.deploy/configmachine{{ machine }}.sh
       remote_src: yes
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
-    ansible.builtin.command: chmod o+x /root/.deploy/configmachine{{ host_index }}.sh
+    ansible.builtin.command: chmod o+x /root/.deploy/configmachine{{ machine }}.sh
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root/.deploy/configmachine{{ host_index }}.sh
+    ansible.builtin.command: bash /root/.deploy/configmachine{{ machine }}.sh
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
-      src: /root/.deploy/configssh{{ host_index }}
+      src: /root/.deploy/configssh{{ machine }}
       dest: /home/{{ ansible_facts.hostname }}/.ssh/config
       remote_src: yes
 
