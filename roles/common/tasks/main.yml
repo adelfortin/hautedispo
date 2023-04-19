@@ -1,5 +1,8 @@
 ---
-
+  - name: Debug
+    debug: 
+      msg: "{{ groups['machine_sans_configuration'] }}"
+      
   - name: Determine index of current host
     set_fact:
       host_index: "{{ groups['machine_sans_configuration'].index(ansible_hostname) }}"
