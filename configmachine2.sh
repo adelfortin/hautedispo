@@ -15,11 +15,21 @@
 # - PASSERELLE_1 : l'adresse de passerelle pour cette connexion
 # - PASSERELLE_2 : l'adresse de passerelle pour cette connexion
 
-
 UTILISATEUR="webserver1"
 CHEMIN_DE_BASE="/home/$UTILISATEUR"
+THEME_BASH=".bash/themes/agnoster-bash"
 CHEMIN_DOSSIER_SSH="$CHEMIN_DE_BASE/.ssh"
-CHEMIN_DU_THEME_BASH="$CHEMIN_DE_BASE/.bash/agnoster-bash"
+CHEMIN_DU_THEME_BASH="$CHEMIN_DE_BASE/$THEME_BASH"
+CHEMIN_SOURCE_BASE="/root/.deploy"
+CHEMIN_SOURCE_SSH="$CHEMIN_SOURCE_BASE/config"
+CHEMIN_SOURCE_BASHRC="$CHEMIN_SOURCE_BASE/.bashrc"
+CHEMIN_SOURCE_AGNOSTER_BASH="$CHEMIN_SOURCE_BASE/.agnoster.bash"
+CHEMIN_DESTINATION_SSH="$CHEMIN_DOSSIER_SSH/config"
+CHEMIN_DESTINATION_BASHRC="$CHEMIN_DE_BASE/.bashrc"
+CHEMIN_DESTINATION_AGNOSTER_BASH="$CHEMIN_DU_THEME_BASH/agnoster.bash"
+CHEMIN_DESTINATION_SSH_ROOT="/root/config"
+CHEMIN_DESTINATION_BASHRC_ROOT="root/.bashrc"
+CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT="root/.ssh/config"
 IPV4_1="192.168.83.3/24"
 IPV4_2="192.168.82.3/24"
 INTERFACE_1="enp0s8"
@@ -94,7 +104,36 @@ fi
 fi
 }
 
+# Fonction pour copier des fichiers ou des dossiers
+# Prend deux paramètres : la source et la destination de la copie
+copier() {
+source="$1"
+destination="$2"
+
+# Créer le dossier de destination s'il n'existe pas encore
+creer_dossier "$(dirname "$destination")"
+
+# Copier les fichiers/dossiers
+cp -r "$source" "$destination"
+
+# Vérifier si la copie a réussi
+if [ $? -eq 0 ]; then
+echo "Le fichier/dossier '$source' a été copié avec succès vers '$destination'."
+else
+echo "Erreur lors de la copie de '$source' vers '$destination'."
+fi
+}
+
 creer_dossier "$CHEMIN_DOSSIER_SSH"
 creer_dossier "$CHEMIN_DU_THEME_BASH"
+creer_dossier "$CHEMIN_DOSSIER_SSH_ROOT"
+creer_dossier "$CHEMIN_DOSSIER_DU_THEME_BASH_ROOT"
+
+copier "$CHEMIN_SOURCE_SSH" "$CHEMIN-DESTINATION_SSH"
+copier "$CHEMIN_SOURCE_BASHRC" "$CHEMIN-DESTINATION_BASHRC"
+copier "$CHEMIN_SOURCE_AGNOSTER_BASH" "$CHEMIN_DESTINATION_AGNOSTER_BASH"
+copier "$CHEMIN_SOURCE_SSH" "$CHEMIN-DESTINATION_SSH_ROOT"
+copier "$CHEMIN_SOURCE_BASHRC" "$CHEMIN-DESTINATION_BASHRC_ROOT"
+copier "$CHEMIN_SOURCE_AGNOSTER_BASH" "$CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT"
 
 echo "Le script a terminé son exécution." 
