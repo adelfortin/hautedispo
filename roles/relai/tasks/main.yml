@@ -6,10 +6,10 @@
 
   - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
     ansible.builtin.git:
-    repo: https://github.com/SHaddow7/hautedispo
-    dest: /home/{{ ansible_facts.hostname }}/.CMS 
-    clone: yes
-    update: yes
+      repo: https://github.com/SHaddow7/hautedispo
+      dest: /home/{{ ansible_facts.hostname }}/.CMS 
+      clone: yes
+    u pdate: yes
 
   - name: Execute transformer_en_routeur.sh script
     ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
