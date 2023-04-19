@@ -15,7 +15,7 @@ function nombre_ipv4() {
 prefix=$(echo $ip | cut -d. -f1-3)
 
 # Obtenir la liste de toutes les adresses IPv4 dans le même réseau que la machine
-adresses=$(nmap -sL $prefix.0/24 | grep "Nmap scan report for" | awk '{print $NF}')
+adresses=$(nmap -sL -v $prefix.0/24 | grep "Nmap scan report for" | awk '{print $NF}')
 
 # Compter le nombre d'adresses IPv4 dans la liste
 nombre=$(echo "$adresses" | wc -l)
