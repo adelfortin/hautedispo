@@ -4,7 +4,7 @@
 UTILISATEUR="root"
 PASSWORD="master"
 PASSPHRASE="" # Laisser vide pour ne pas définir de phrase secrète
-FILE="adresse_ipv4.log" # Nom du fichier contenant les adresses IP des hôtes distants
+FILE="/root/.deploy/adresse_ipv4.log" # Nom du fichier contenant les adresses IP des hôtes distants
 
 # Fonction pour répondre automatiquement aux questions de ssh-keygen
 function ssh_keygen {
