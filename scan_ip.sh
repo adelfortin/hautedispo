@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Définir le nom de l'interface à scanner
-INTERFACE="enp0s8"
+INTERFACE="enp0s3"
 
 # Obtenir l'adresse IP de l'interface
 ip=$(ip addr show dev $INTERFACE | grep "inet " | awk '{print $2}' | cut -d/ -f1)
