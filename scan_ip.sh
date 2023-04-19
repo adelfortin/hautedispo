@@ -27,7 +27,7 @@ nombre=$(echo "$adresses" | wc -l)
 nombre=$(expr $nombre - 1)
 
 #
-nombre_personalise=9
+nombre_personalise=8
 
 # Stocker le nombre dans une variable liée
 NOMBRE_IP=$nombre
@@ -61,7 +61,7 @@ i=0
 for adresse in $adresses
 do
 # Vérifier si l'adresse est celle de la machine ou si elle est bannie
-if [[ ! " ${ADRESSES_BANNIES[@]} " =~ " ${adresse} " ]]
+if [ "$adresse" != "$ip" ] && [[ ! " ${ADRESSES_BANNIES[@]} " =~ " ${adresse} " ]]
 then
 # Si l'adresse n'est pas celle de la machine ni bannie, effectuer un ping
 if ping -c 1 -w 1 $adresse > /dev/null
@@ -88,6 +88,8 @@ echo "Le script a trouvé le nombre d'adresse attendu sur ce réseau."
 break
 fi
 done
+echo "127.0.0.1" >&3
+
 }
 usage() {
   nombre_ipv4
