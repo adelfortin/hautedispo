@@ -7,12 +7,6 @@
     chemin_fichier_adresses_ipv4: "./adresse_ipv4.log"
   
   tasks:
-  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
-    ansible.builtin.command: chmod o+x /root/.deploy/scan_ip.sh
-    become: true
-
-  - name: EXECUTE LE SCRIPT DE SCANNAGE DES IPS DU RESEAU
-    ansible.builtin.command: bash /root/.deploy/scan_ip.sh
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
     ansible.builtin.command: chmod o+x /root/.deploy/ssh_auto.sh
