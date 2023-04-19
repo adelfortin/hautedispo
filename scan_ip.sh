@@ -24,7 +24,7 @@ nombre=$(echo "$adresses" | wc -l)
 nombre=$(expr $nombre - 1)
 
 #
-nombre_personalise=3
+nombre_personalise=9
 
 # Stocker le nombre dans une variable liée
 NOMBRE_IP=$nombre
