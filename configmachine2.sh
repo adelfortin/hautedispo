@@ -94,12 +94,20 @@ else
 exit 1
 fi
 
-# Changement pour le nouvel utilisateur tout juste créé
-if su $UTILISATEUR ; then
-	echo "Vous êtes maintenant connecté en tant qu'utilisateur $UTILISATEUR."
+#Changement pour le nouvel utilisateur tout juste créé
+if su - "$UTILISATEUR" -c 'echo "Vous êtes maintenant $USER"' ; then
+echo "Vous êtes maintenant connecté en tant qu'utilisateur $UTILISATEUR."
 else
-	echo "Erreur : Impossible de changer pour l'utilisateur $UTILISATEUR." >&2
+echo "Erreur : Impossible de changer pour l'utilisateur $UTILISATEUR." >&2
 exit 1
 fi
 
-echo "Le script a terminé son exécution."
+# Création d'une clé ssh pour cet utilisateur
+if ssh-keygen -t rsa -N "$UTILISATEUR" -f "/home/$UTILISATEUR/.ssh/id_rsa" ; then
+echo "La clé ssh pour l'utilisateur $UTILISATEUR a été correctement générée."
+else
+echo "Erreur : Impossible de générer la clé ssh pour l'utilisateur $UTILISATEUR." >&2
+exit 1
+fi
+
+echo "Le script a terminé son exécution." 
