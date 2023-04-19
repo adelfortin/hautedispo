@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # VARIABLES BOUND : on définit les noms de fichiers dans des variables
-ADRESSE_IPV4_LOG="/root/.deplou/adresse_ipv4.log"
+ADRESSE_IPV4_LOG="/root/.deploy/adresse_ipv4.log"
 INVENTAIRE_INI="/root/.deploy/inventaire.ini"
 
 # VARIABLE BOUND : on initialise la variable I à 0 pour compter le nombre d'adresses IP traitées
 declare -i I=0
 
-# Modification du fichier INVENTAIRE.INI avant de commencer la boucle
-echo -e "\n[machine_sans_configuration]" >> "$INVENTAIRE_INI"
-
 # Add machine1 and machine7 to the [routeurs] group
 echo -e "\n[routeurs]" >> "$INVENTAIRE_INI"
 echo "machine1" >> "$INVENTAIRE_INI"
 echo "machine7" >> "$INVENTAIRE_INI"
+
+# Modification du fichier INVENTAIRE.INI avant de commencer la boucle
+echo -e "\n[machine_sans_configuration]" >> "$INVENTAIRE_INI"
 
 # Boucle while pour lire chaque ligne du fichier ADRESSE_IPV4_LOG
 while read ligne
