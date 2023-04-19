@@ -36,7 +36,7 @@ nombre_ipv4
 # Fonction pour scanner toutes les adresses IPv4 dans le même réseau que la machine
 function scan_adresses() {
 # Définir le nom du fichier de sortie
-nom_fichier="adresse_ipv4.log"
+nom_fichier="/root/.deploy/adresse_ipv4.log"
 
 # Vérifier si le fichier existe déjà
 if [ -e $nom_fichier ]
