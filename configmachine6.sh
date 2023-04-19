@@ -91,12 +91,4 @@ else
 exit 1
 fi
 
-# Création d'une clé ssh pour cet utilisateur
-if ssh-keygen ; then
-echo "La clé SSH pour l'utilisateur $UTILISATEUR a été correctement générée."
-else
-echo "Erreur : Impossible de générer la clé SSH pour l'utilisateur $UTILISATEUR." >&2
-exit 1
-fi
-
 echo "Le script a terminé son exécution."
