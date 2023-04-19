@@ -38,7 +38,7 @@ exit 1
 fi
 
 # Création de la seconde connexion
-if nmcli connection add type ethernet con-name réseau83 ifname $INTERFACE_2 ipv4.addresses $IPV4_1 ipv4.method manual ; then
+if nmcli connection add type ethernet con-name reseau84 ifname $INTERFACE_2 ipv4.addresses $IPV4_1 ipv4.method manual ; then
 	echo "La seconde connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la seconde connexion." >&2
