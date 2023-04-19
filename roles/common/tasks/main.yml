@@ -1,10 +1,8 @@
 ---   
   - name: Set machine facts
     set_fact:
-      machine: "machine{{ index }}"
-    loop: "{{ range(0, groups['machine_sans_configuration']|length) }}"
-    loop_control:
-      index_var: index
+      machine: "{{ item.0 }}"
+    with_indexed_items: "{{ groups['machine_sa,s_configuration'] }}"
       
   - name: Debug
     debug: 
