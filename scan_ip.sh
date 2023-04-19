@@ -9,13 +9,16 @@ ip=$(ip addr show dev $INTERFACE | grep "inet " | awk '{print $2}' | cut -d/ -f1
 # Stocker l'adresse IP dans une variable liée
 IP_MACHINE=$ip
 
+# Définir les adresses bannies
+ADRESSES_BANNIES=("192.168.58.1" "192.168.58.2")
+
 # Fonction pour obtenir le nombre d'adresses IPv4 dans le même réseau que la machine
 function nombre_ipv4() {
 # Extraire le préfixe du réseau à partir de l'adresse IP
 prefix=$(echo $ip | cut -d. -f1-3)
 
 # Obtenir la liste de toutes les adresses IPv4 dans le même réseau que la machine
-adresses=$(nmap -sL -v $prefix.0/24 | grep "Nmap scan report for" | awk '{print $NF}')
+adresses=$(nmap -sL $prefix.0/24 | grep "Nmap scan report for" | awk '{print $NF}')
 
 # Compter le nombre d'adresses IPv4 dans la liste
 nombre=$(echo "$adresses" | wc -l)
@@ -57,19 +60,19 @@ i=0
 # Boucle pour scanner toutes les adresses IPv4
 for adresse in $adresses
 do
-# Vérifier si l'adresse est celle de la machine
-if [ "$adresse" != "$ip" ]
+# Vérifier si l'adresse est celle de la machine ou si elle est bannie
+if [ "$adresse" != "$ip" ] && [[ ! " ${ADRESSES_BANNIES[@]} " =~ " ${adresse} " ]]
 then
-# Si l'adresse n'est pas celle de la machine, effectuer un ping
+# Si l'adresse n'est pas celle de la machine ni bannie, effectuer un ping
 if ping -c 1 -w 1 $adresse > /dev/null
 then
 # Si la réponse est positive, incrémenter le compteur et écrire dans le fichier
 i=$(expr $i + 1)
-echo "$adresse" >&3
-echo "Adress $adresse a répondu au ping." >> log.txt
+echo "$i:$adresse" >&3
+echo "Adresse $adresse a répondu au ping." >> log.txt
 else
 # Sinon, ne rien faire
-echo "Adress $adresse n'a pas répondu au ping." >> log.txt
+echo "Adresse $adresse n'a pas répondu au ping." >> log.txt
 fi
 fi
 
