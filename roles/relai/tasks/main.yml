@@ -1,16 +1,15 @@
 ---
-  - name: LANCEMENT DE LA SECONDE PARTIE DE L'INSTALLATION
-    - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
-      ansible.builtin.file:
-        path: /home/{{ ansible_facts.hostname }}/.CMS
-        state: directory
+  - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
+    ansible.builtin.file:
+      path: /home/{{ ansible_facts.hostname }}/.CMS
+      state: directory
 
-    - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
-      ansible.builtin.git:
-      repo: https://github.com/SHaddow7/CMS-HAUTE-DISPO-GROUPE7
-      dest: /home/{{ ansible_facts.hostname }}/.CMS 
-      clone: yes
-      update: yes
+  - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
+    ansible.builtin.git:
+    repo: https://github.com/SHaddow7/hautedispo
+    dest: /home/{{ ansible_facts.hostname }}/.CMS 
+    clone: yes
+    update: yes
 
-    - name: Execute transformer_en_routeur.sh script
-      ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
+  - name: Execute transformer_en_routeur.sh script
+    ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
