@@ -1,14 +1,14 @@
----
-  - name: Debug
-    debug: 
-      msg: "{{ groups['machine_sans_configuration'] }}"
-      
+---   
   - name: Set machine facts
     set_fact:
       machine: "machine{{ index }}"
     loop: "{{ range(0, groups['machine_sans_configuration']|length) }}"
     loop_control:
       index_var: index
+      
+  - name: Debug
+    debug: 
+      msg: "{{ machine }}"
 
   - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
     ansible.builtin.file:
