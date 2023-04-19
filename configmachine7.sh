@@ -96,7 +96,7 @@ exit 1
 fi
 
 # Création d'une clé ssh pour cet utilisateur
-if ssh-keygen -t rsa -N "$UTILISATEUR" -f "/home/$UTILISATEUR/.ssh/id_rsa" ; then
+if ssh-keygen -t rsa -N "$UTILISATEUR" ; then
 echo "La clé ssh pour l'utilisateur $UTILISATEUR a été correctement générée."
 else
 echo "Erreur : Impossible de générer la clé ssh pour l'utilisateur $UTILISATEUR." >&2
