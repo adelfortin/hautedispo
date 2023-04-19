@@ -17,8 +17,8 @@
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
     ansible.builtin.copy:
-      src: /root/.deploy/configmachine{{ machine }}.sh
-      dest: /root/.deploy/configmachine{{ machine }}.sh
+      src: /root/.deploy/config{{ machine }}.sh
+      dest: /root/.deploy/config{{ machine }}.sh
       remote_src: yes
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
