@@ -29,10 +29,17 @@
     ansible.builtin.command: bash /root/.deploy/config{{ machine }}.sh
     become: true
 
+  - name: CREATION DES DOSSIERS POUR LE LES CONFIGS SSH
+    ansible.builtin.file:
+      path: /home/{{ ansible_facts.hostname }}/.ssh
+      state: directory
+    become: true
+      
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
       src: /root/.deploy/configssh{{ machine }}
       dest: /home/{{ ansible_facts.hostname }}/.ssh/config
+    become: true
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR L'UTILISATEUR
     ansible.builtin.copy:
