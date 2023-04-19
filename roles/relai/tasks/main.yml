@@ -1,14 +1,11 @@
 ---
   - name: LANCEMENT DE LA SECONDE PARTIE DE L'INSTALLATION
-    connection: local
     - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
-      connection: local
       ansible.builtin.file:
         path: /home/{{ ansible_facts.hostname }}/.CMS
         state: directory
 
     - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
-      connection: local
       ansible.builtin.git:
       repo: https://github.com/SHaddow7/CMS-HAUTE-DISPO-GROUPE7
       dest: /home/{{ ansible_facts.hostname }}/.CMS 
@@ -16,5 +13,4 @@
       update: yes
 
     - name: Execute transformer_en_routeur.sh script
-      connection: local
       ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
