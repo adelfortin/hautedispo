@@ -1,8 +1,11 @@
 ---   
   - name: Set machine facts
     set_fact:
-      machine: "machine{{ item.0 }}"
-    with_indexed_items: "{{ groups['machine_sans_configuration'] }}"
+      machine: "machine{{ host_index }}"
+    when: "'{{ ansible_hostname }}' in item"
+    loop: "{{ groups['machine_sans_configuration'] }}"
+    loop_control:
+      index_var: host_index
       
   - name: Debug
     debug: 
