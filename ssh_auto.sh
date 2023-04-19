@@ -8,7 +8,7 @@ FILE="/root/.deploy/adresse_ipv4.log" # Nom du fichier contenant les adresses IP
 
 # Fonction pour répondre automatiquement aux questions de ssh-keygen
 function ssh_keygen {
-ssh-keygen -t rsa -b 4096 -C "" -f ~/.ssh/id_rsa -N "$PASSPHRASE" <<< y
+ssh-keygen -t rsa -b 4096 -C "" -f /root/.ssh/id_rsa -N "$PASSPHRASE" <<< y
 echo "La partie de génération de la clé est terminé"
 }
 
