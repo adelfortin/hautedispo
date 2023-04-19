@@ -2,7 +2,7 @@
   - name: Set machine facts
     set_fact:
       machine: "{{ item.0 }}"
-    with_indexed_items: "{{ groups['machine_sa,s_configuration'] }}"
+    with_indexed_items: "{{ groups['machine_sans_configuration'] }}"
       
   - name: Debug
     debug: 
