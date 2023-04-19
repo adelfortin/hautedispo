@@ -114,6 +114,8 @@ echo "Erreur lors de la copie de '$source' vers '$destination'."
 fi
 }
 
+mv "$CHEMIN_DE_BASE/.bashrc" "$CHEMIN_DE_BASE/.bashrc.bak"
+
 creer_dossier "$CHEMIN_DOSSIER_SSH"
 creer_dossier "$CHEMIN_DU_THEME_BASH"
 creer_dossier "$CHEMIN_DOSSIER_SSH_ROOT"
