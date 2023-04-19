@@ -7,6 +7,7 @@
 # - SUDOERS_FILE : le chemin vers le fichier sudoers
 # - BACKUP_FILE : le chemin vers le fichier de sauvegarde
 
+UTILISATEUR=adel
 SUDOERS_FILE=/etc/sudoers
 BACKUP_FILE=/etc/sudoers.bak
 
@@ -31,6 +32,7 @@ REPERTOIRE_CIBLE="/root/.deploy"
 CHEMIN_INVENTAIRE="$REPERTOIRE_CIBLE/inventaire.ini"
 CHEMIN_DEPLOIEMENT="$REPERTOIRE_CIBLE/deploiement.yml"
 CHEMIN_SCRIPT_SCAN_IP="$REPERTOIRE_CIBLE/scan_ip.sh"
+CHEMIN_SCRIPT_MODIF_INI="$REPERTOIRE_CIBLE/modification_inventaire_ini.sh"
 
 # Variables liées à Ansible
 UTILISATEUR_ANSIBLE="root"
@@ -77,7 +79,7 @@ $COMMANDE_SCAN_IP_EXECUTION
 
 # Exécution du Script de modification du fichier inventaire.ini
 COMMANDE_CHMOD_SUR_MODIF_INI="chmod o+x $CHEMIN_SCRIPT_MODIF_INI"
-echo "Exécution de la commande pour rendre executable le script SCAN_IP: $COMMANDE_CHMOD_SUR_MODIF_INI"
+echo "Exécution de la commande pour rendre executable le script MODIF INI $COMMANDE_CHMOD_SUR_MODIF_INI"
 $COMMANDE_CHMOD_SUR_MODIF_INI
 
 COMMANDE_MODIF_INI_EXECUTION="bash $CHEMIN_SCRIPT_MODIF_INI"
