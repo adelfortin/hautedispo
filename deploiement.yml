@@ -14,19 +14,23 @@
 
   - name: EXECUTE LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
     ansible.builtin.command: bash /root/.deploy/ssh_auto.sh
+    become: true
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: machine_sans_configuration
+  become: true
   roles:
     - common
 
 - name: routeurs | Installation de tous les élèments commun aux hôtes
   hosts: relai
+  become: true
   roles:
     - relai
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: relai
+  become: true
   roles:
     - relai
 
