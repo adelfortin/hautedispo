@@ -20,7 +20,6 @@
     ansible.builtin.copy:
       src: /root/.deploy/config{{ machine }}.sh
       dest: /root/.deploy/config{{ machine }}.sh
-      remote_src: yes
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: chmod o+x /root/.deploy/config{{ machine }}.sh
@@ -32,25 +31,21 @@
     ansible.builtin.copy:
       src: /root/.deploy/configssh{{ machine }}
       dest: /home/{{ ansible_facts.hostname }}/.ssh/config
-      remote_src: yes
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR L'UTILISATEUR
     ansible.builtin.copy:
       src: /root/.deploy/.bashrc
       dest: /home/{{ ansible_facts.hostname }}/.bashrc
-      remote_src: yes
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASH DE LA MACHINE POUR ROOT
     ansible.builtin.copy:
       src: /root/.deploy/.bashrc
       dest: /root/.bashrc
-      remote_src: yes
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME DU PROMPT DE BASH DE LA MACHINE POUR L'UTILISATEUR
     ansible.builtin.copy:
       src: /root/.deploy/agnoster.bash
       dest: /home/{{ ansible_facts.hostname }}/.bash/themes/agnoster-bash/agnoster.bash
-      remote_src: yes
 
   - name: CREATION DES DOSSIERS POUR LE THEME DU PROMPT DE BASH DE LA MACHINE POUR ROOT
     ansible.builtin.file:
@@ -61,7 +56,6 @@
     ansible.builtin.copy:
       src: /root/.deploy/agnoster.bash
       dest: /root/.bash/themes/agnoster-bash/agnoster.bash
-      remote_src: yes
 
   # Configuration et installation de DNF et EPEL
   - name: CONFIG DNF | Ajout du proxy dans le fichier de configuration de dnf
