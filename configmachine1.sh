@@ -59,6 +59,14 @@ else
 exit 1
 fi
 
+# Création du groupe
+if groupadd $UTILISATEUR ; then
+	echo "Le groupe $UTILISATEUR a été correctement créé."
+else
+	echo "Erreur : Impossible de créer le groupe $UTILISATEUR." >&2
+exit 1
+fi
+
 # Création de l'utilisateur
 if useradd -g $UTILISATEUR -G wheel -m $UTILISATEUR ; then
 	echo "L'utilisateur $UTILISATEUR a été correctement créé."
