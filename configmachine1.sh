@@ -36,7 +36,7 @@ exit 1
 fi
 
 # Création de la première connexion
-if nmcli connection add type ethernet con-name réseau82 ifname $INTERFACE_1 ipv4.adresses $IPV4_1 ipv4.method manual ; then
+if nmcli connection add type ethernet con-name réseau82 ifname $INTERFACE_1 ipv4.addresses $IPV4_1 ipv4.method manual ; then
 	echo "La première connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la première connexion." >&2
@@ -44,7 +44,7 @@ exit 1
 fi
 
 # Création de la seconde connexion
-if nmcli connection add type ethernet con-name réseau82 ifname $INTERFACE_2 ipv4.adresses $IPV4_2 ipv4.method manual ; then
+if nmcli connection add type ethernet con-name réseau82 ifname $INTERFACE_2 ipv4.addresses $IPV4_2 ipv4.method manual ; then
 	echo "La seconde connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la seconde connexion." >&2
@@ -52,7 +52,7 @@ exit 1
 fi
 
 # Création de la troisième connexion
-if nmcli connection add type ethernet con-name réseau84 ifname $INTERFACE_3 ipv4.adresses $IPV4_3 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual; then
+if nmcli connection add type ethernet con-name réseau84 ifname $INTERFACE_3 ipv4.addresses $IPV4_3 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual; then
 	echo "La troisième connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la troisième connexion." >&2
