@@ -23,9 +23,11 @@
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: chmod o+x /root/.deploy/config{{ machine }}.sh
+    become: true
 
   - name: EXECUTE LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: bash /root/.deploy/config{{ machine }}.sh
+    become: true
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
