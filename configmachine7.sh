@@ -69,38 +69,4 @@ else
 exit 1
 fi
 
-# Sauvegarder le fichier sudoers
-echo "Sauvegarde du fichier sudoers en cours..."
-if cp $SUDOERS_FILE $BACKUP_FILE ; then
-	echo "Le fichier sudoers a été correctement sauvegardé."
-else
-	echo "Erreur : Impossible de sauvegarder le fichier sudoers." >&2
-exit 1
-fi
-
-# Modifier le fichier sudoers
-echo "Accorder les privilèges sudo à l'utilisateur $UTILISATEUR..."
-if sed -i "/^root/a $UTILISATEUR ALL=(ALL) NOPASSWD: ALL" $SUDOERS_FILE ; then
-	echo "Les privilèges sudo ont été accordés à l'utilisateur $UTILISATEUR."
-else
-	echo "Erreur : Impossible d'accorder les privilèges sudo à l'utilisateur $UTILISATEUR." >&2
-exit 1
-fi
-
-#Changement pour le nouvel utilisateur tout juste créé
-if su - "$UTILISATEUR" -c 'echo "Vous êtes maintenant $USER"' ; then
-echo "Vous êtes maintenant connecté en tant qu'utilisateur $UTILISATEUR."
-else
-echo "Erreur : Impossible de changer pour l'utilisateur $UTILISATEUR." >&2
-exit 1
-fi
-
-# Création d'une clé ssh pour cet utilisateur
-if ssh-keygen -t rsa -N "$UTILISATEUR" ; then
-echo "La clé ssh pour l'utilisateur $UTILISATEUR a été correctement générée."
-else
-echo "Erreur : Impossible de générer la clé ssh pour l'utilisateur $UTILISATEUR." >&2
-exit 1
-fi
-
 echo "Le script a terminé son exécution." 
