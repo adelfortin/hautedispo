@@ -17,6 +17,9 @@
 
 
 UTILISATEUR="supervision"
+CHEMIN_DE_BASE="/home/$UTILISATEUR"
+CHEMIN_DOSSIER_SSH="$CHEMIN_DE_BASE/.ssh"
+CHEMIN_DU_THEME_BASH="$CHEMIN_DE_BASE/.bash/agnoster-bash"
 IPV4_1="192.168.83.1/24"
 INTERFACE_1="enp0s8"
 DNS_1="10.156.32.33"
@@ -64,5 +67,23 @@ else
 	echo "Erreur : Impossible de créer le mot de passe pour l'utilisateur $UTILISATEUR." >&2
 exit 1
 fi
+
+# Fonction pour créer un dossier à partir d'un chemin spécifié
+# Prend un paramètre : le chemin du dossier à créer
+creer_dossier() {
+if [ -d "$1" ]; then
+echo "Le dossier '$1' existe déjà."
+else
+mkdir -p "$1"
+if [ $? -eq 0 ]; then
+echo "Le dossier '$1' a été créé avec succès."
+else
+echo "Erreur lors de la création du dossier '$1'."
+fi
+fi
+}
+
+creer_dossier "$CHEMIN_DOSSIER_SSH"
+creer_dossier "$CHEMIN_DU_THEME_BASH"
 
 echo "Le script a terminé son exécution." 
