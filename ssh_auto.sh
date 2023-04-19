@@ -14,7 +14,7 @@ echo "La partie de génération de la clé est terminé"
 
 # Fonction pour copier la clé publique sur un hôte distant
 function ssh_copy_id {
-sshpass -p "$PASSWORD" ssh-copy-id "$UTILISATEUR@$1" <<< y
+sshpass -p "$PASSWORD" ssh-copy-id -o StrictHostKeyChecking=no "$UTILISATEUR@$1" <<< y
 }
 
 # Générer la clé SSH
