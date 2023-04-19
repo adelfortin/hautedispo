@@ -77,6 +77,9 @@ fi
 fi
 
 # Vérifier si le nombre maximum d'adresses a été atteint
+if [ $i -ge $NOMBRE_IP ]
+then
+# Si le nombre maximum a été atteint, sortir de la boucle
 echo "Le script a essayé tout les adresses possibles"
 break
 elif [ $i -ge $nombre_personalise ]
