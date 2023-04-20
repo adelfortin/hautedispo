@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-REPO_URL="https://github.com/adelfortin/fontspoweline"
+REPO_URL="https://github.com/adelfortin/fontspowerline"
 DOSSIER_CLONE="/root/.fonts"
 DOSSIER_ARCHIVE="/root"
 ARCHIVE_NOM="powerline_fonts.tar.gz"
