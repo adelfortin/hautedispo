@@ -41,3 +41,21 @@
       path: /etc/dnf/dnf.conf
       line: proxy=http://proxy.infra.dgfip:3128
     become: true
+    
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
+    ansible.builtin.copy:
+      src: /root/.deploy/untarscript.sh
+      dest: /root/.deploy/untarscript.sh
+      
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
+    ansible.builtin.copy:
+      src: /root/powerline_fonts.tar.gz
+      dest: /root/powerline_fonts.tar.gz
+    
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT D'INSTALLATION DES POLICES DE CARACTERES
+    ansible.builtin.command: chmod o+x /root/.deploy/untarscript.sh
+    become: true
+
+  - name: EXECUTE LE SCRIPT D'INSTALLATION DES POLICES DE CARACTERES
+    ansible.builtin.command: bash /root/.deploy/untarscript.sh
+    become: true
