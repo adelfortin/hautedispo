@@ -24,7 +24,7 @@
   hosts: relai
   become: true
   roles:
-    - relai
+    - routeurs
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: relai
