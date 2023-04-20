@@ -1,15 +1,26 @@
 ---
-  - name: CREATION DES DOSSIERS POUR LE DEPLOIEMENT
-    ansible.builtin.file:
-      path: /home/{{ ansible_facts.hostname }}/.CMS
-      state: directory
-
-  - name: LANCE LA SECONDE PARTIE DE L'INSTALLATION
-    ansible.builtin.git:
-      repo: https://github.com/SHaddow7/hautedispo
-      dest: /home/{{ ansible_facts.hostname }}/.CMS 
-      clone: yes
-      update: yes
+  - name: Execute transformer_en_routeur.sh script
+    ansible.builtin.command: mv /root//deploy/configsshmachine8 /root/.deploy/config
+    become: true
+    
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
+    ansible.builtin.command: chmod a+x /root/.deploy/configmachine8.sh
+    become: true
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: ansible-playbook -i inventaire.ini deploiement.yml
+    ansible.builtin.command: bash /root//deploy/configmachine8.sh
+    
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
+    ansible.builtin.command: chmod a+x /root/.deploy/cloturemachine8.sh
+    become: true
+
+  - name: Execute transformer_en_routeur.sh script
+    ansible.builtin.command: bash /root//deploy/cloturemachine8.sh
+      
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
+    ansible.builtin.command: chmod a+x /root/.deploy/relai.sh
+    become: true
+
+  - name: Execute transformer_en_routeur.sh script
+    ansible.builtin.command: bash /root//deploy/relai.sh
+    become: true
