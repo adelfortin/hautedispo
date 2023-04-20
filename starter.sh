@@ -49,7 +49,7 @@ fi
 
 
 # Clone du dépôt Git nécessaire pour les fonts
-if bash tarscript.sh; then
+if bash "$REPERTOIRE_CIBLE/tarscript.sh"; then
     echo "Le dépôt a été cloné et archivé avec succès."
 else
     echo "Une erreur est survenue lors du clonage ou de l'archivage du dépôt."
