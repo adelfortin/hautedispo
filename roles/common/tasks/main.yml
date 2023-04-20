@@ -59,3 +59,16 @@
   - name: EXECUTE LE SCRIPT D'INSTALLATION DES POLICES DE CARACTERES
     ansible.builtin.command: bash /root/.deploy/untarscript.sh
     become: true
+    
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS AVANT REDEMARRAGE
+    ansible.builtin.copy:
+      src: /root/.deploy/cloture{{ machine }}.sh
+      dest: /root/.deploy/cloture{{ machine }}.sh
+      
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
+    ansible.builtin.command: chmod o+x /root/.deploy/cloture{{ machine }}.sh
+    become: true
+
+  - name: EXECUTE LE SCRIPT DE REDEMARRAGE
+    ansible.builtin.command: bash /root/.deploy/cloture{{ machine }}.sh
+    become: true
