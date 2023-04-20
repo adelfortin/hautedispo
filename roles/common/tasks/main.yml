@@ -16,6 +16,16 @@
       path: /root/.deploy
       state: directory
       
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE BASHRC
+    ansible.builtin.copy:
+      src: /root/.deploy/.bashrc
+      dest: /root/.deploy/.bashrc
+ 
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DU THEME AGNOSTER BASH
+    ansible.builtin.copy:
+      src: /root/.deploy/agnoster.bash
+      dest: /root/.deploy/agnoster.bash
+      
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
     ansible.builtin.copy:
       src: /root/.deploy/transformer_en_routeur.sh
