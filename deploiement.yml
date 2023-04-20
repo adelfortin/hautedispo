@@ -21,7 +21,7 @@
     - common
 
 - name: routeurs | Installation de tous les élèments commun aux hôtes
-  hosts: relai
+  hosts: routeurs
   become: true
   roles:
     - routeurs
