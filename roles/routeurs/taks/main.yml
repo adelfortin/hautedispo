@@ -6,6 +6,8 @@
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
     ansible.builtin.command: chmod o+x /root/.deploy/transformer_en_routeur.sh
+    become: true
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root/.deploy/transformer_en_routeur.sh
+    ansible.builtin.command: sudo bash /root/.deploy/transformer_en_routeur.sh
+    become: true
