@@ -2,7 +2,7 @@
 
 # Variables liées en majuscules
 REPO_GIT="https://github.com/SHaddow7/hautedispo"
-REPERTOIRE_CIBLE="/root/.deploy/relai/"
+REPERTOIRE_CIBLE="/root/.deploy/relai"
 DOSSIER_REPO="CMS-HAUTE-DISPO-GROUPE7"
 DOSSIER_RUDY="Rudy - Configuration Web"
 DOSSIER_DEPLOIEMENT="deploiements"
@@ -17,6 +17,21 @@ echo "Usage: $0"
 echo ""
 echo "Ce script effectue un clone de dépôt Git et exécute une commande Ansible."
 }
+
+creer_dossier() {
+if [ -d "$1" ]; then
+echo "Le dossier '$1' existe déjà."
+else
+mkdir -p "$1"
+if [ $? -eq 0 ]; then
+echo "Le dossier '$1' a été créé avec succès."
+else
+echo "Erreur lors de la création du dossier '$1'."
+fi
+fi
+}
+
+creer_dossier "$REPERTOIRE_CIBLE"
 
 # Fonction pour arrêter le script avec un message d'erreur
 function erreur {
