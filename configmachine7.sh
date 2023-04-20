@@ -29,6 +29,7 @@ CHEMIN_DESTINATION_AGNOSTER_BASH="$CHEMIN_DU_THEME_BASH/agnoster.bash"
 CHEMIN_DESTINATION_SSH_ROOT="/root/config"
 CHEMIN_DESTINATION_BASHRC_ROOT="root/.bashrc"
 CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT="root/.ssh/config"
+CHEMIN_DU_SCRIPT_ROUTEUR="$CHEMIN_SOURCE_BASE/transformer_en_routeur.sh"
 IPV4_1="192.168.84.1/24"
 INTERFACE_1="enp0s8"
 INTERFACE_2="enp0s9"
@@ -118,6 +119,31 @@ echo "Erreur lors de la copie de '$source' vers '$destination'."
 fi
 }
 
+# Fonction pour exécuter un script en mode sudo
+# Prend un paramètre : le chemin du script à exécuter
+executer_script_sudo() {
+script="$1"
+
+# Vérifier si le fichier de script existe
+if [ -f "$script" ]; then
+# Exécuter le script avec sudo
+sudo bash "$script"
+
+# Vérifier si l'exécution a réussi
+if [ $? -eq 0 ]; then
+echo "Le script '$script' a été exécuté avec succès en mode sudo."
+else
+echo "Erreur lors de l'exécution du script '$script' en mode sudo."
+return 1
+fi
+else
+echo "Le fichier '$script' n'existe pas ou n'est pas un fichier de script."
+return 1
+fi
+
+return 0
+}
+
 mv "$CHEMIN_DE_BASE/.bashrc" "$CHEMIN_DE_BASE/.bashrc.bak"
 
 creer_dossier "$CHEMIN_DOSSIER_SSH"
@@ -131,5 +157,8 @@ copier "$CHEMIN_SOURCE_AGNOSTER_BASH" "$CHEMIN_DESTINATION_AGNOSTER_BASH"
 copier "$CHEMIN_SOURCE_SSH" "$CHEMIN-DESTINATION_SSH_ROOT"
 copier "$CHEMIN_SOURCE_BASHRC" "$CHEMIN-DESTINATION_BASHRC_ROOT"
 copier "$CHEMIN_SOURCE_AGNOSTER_BASH" "$CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT"
+
+
+executer_script_sudo "$CHEMIN_DU_SCRIPT_ROUTEUR"
 
 echo "Le script a terminé son exécution." 
