@@ -1,6 +1,6 @@
 ---
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: mv /root//deploy/configsshmachine8 /root/.deploy/config
+    ansible.builtin.command: mv /root/deploy/configsshmachine8 /root/.deploy/config
     become: true
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
@@ -8,19 +8,19 @@
     become: true
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root//deploy/configmachine8.sh
+    ansible.builtin.command: bash /root/deploy/configmachine8.sh
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
     ansible.builtin.command: chmod a+x /root/.deploy/cloturemachine8.sh
     become: true
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root//deploy/cloturemachine8.sh
+    ansible.builtin.command: bash /root/deploy/cloturemachine8.sh
       
-  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE RELAI
     ansible.builtin.command: chmod a+x /root/.deploy/relai.sh
     become: true
 
-  - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /root//deploy/relai.sh
+  - name: EXECUTE LE SCRIPT DE RELAI
+    ansible.builtin.command: bash /root/deploy/relai.sh
     become: true
