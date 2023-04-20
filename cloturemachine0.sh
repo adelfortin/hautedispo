@@ -35,6 +35,31 @@ fi
 echo "Supprimer les connexions non nécessaire"
 supprimer_connexion
 
-# Redémarrage de la machine
-echo "Redémarrage de la machine..."
-reboot
+# Fonction pour redémarrer le service de gestionnaire de réseau
+redemarrer_service_reseau() {
+# Arrêter le service de gestionnaire de réseau
+systemctl stop NetworkManager
+
+# Vérifier si l'arrêt du service a réussi
+if [ $? -eq 0 ]; then
+echo "Le service de gestionnaire de réseau a été arrêté avec succès."
+else
+echo "Erreur lors de l'arrêt du service de gestionnaire de réseau."
+return 1
+fi
+
+# Redémarrer le service de gestionnaire de réseau
+systemctl restart NetworkManager
+
+# Vérifier si le redémarrage du service a réussi
+if [ $? -eq 0 ]; then
+echo "Le service de gestionnaire de réseau a été redémarré avec succès."
+else
+echo "Erreur lors du redémarrage du service de gestionnaire de réseau."
+return 1
+fi
+
+return 0
+}
+
+redemarrer_service_reseau
