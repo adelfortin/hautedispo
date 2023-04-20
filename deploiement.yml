@@ -28,6 +28,7 @@
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: relai
+  connection: local
   become: true
   roles:
     - relai
