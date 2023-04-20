@@ -21,8 +21,8 @@ function find_adresses {
     fping -aqg ${prefix_adresse}.0/24 >$fichier_decouverte
     # Trie en fonction des adresses bannies
     while IFS= read -r adresse; do
-        if [ "$adresse" != "$ip_actuel" ] && [[ ! ${adresses_bannies[*]} =~ ${adresse} ]]; then
-            echo "$adresse" >${fichier_ip}
+        if [ "$adresse" != "$ip_actuel" ] && [[ ! ${adresses_bannies[@]} =~ ${adresse} ]]; then
+            echo "$adresse" >>${fichier_ip}
         fi
     done <"$fichier_decouverte"
     # Récupere au moin le nombre d'adresse suffisant
