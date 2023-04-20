@@ -27,6 +27,14 @@
     - routeurs
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
+  hosts: cloture
+  connection: local
+  become: true
+  roles:
+    - cloture
+
+    
+- name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: relai
   connection: local
   become: true
