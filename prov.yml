@@ -1,5 +1,6 @@
 
 ---
+# Code mort
 - name: Installer les config necessaire pour rendre fonctionelle la navigation à travers le réseau
   hosts: connexion_local
   connection: local
