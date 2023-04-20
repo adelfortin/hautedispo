@@ -1,4 +1,9 @@
 #!/bin/bash
+# ---------------------#
+# Desc.   :
+# Date    :
+# Version :
+# ---------------------#
 
 # set variables
 LOCAL_DIR=/path/to/local/directory
