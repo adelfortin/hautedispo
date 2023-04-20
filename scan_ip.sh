@@ -7,7 +7,7 @@
 
 prefix_adresse="192.168.58"
 adresses_bannies=("192.168.58.1" "192.168.58.2")
-nombre_adresse_voulue=3
+nombre_adresse_voulue=9
 interface="enp0s3"
 ip_actuel=$(ip addr show dev $interface | grep "inet " | awk '{print $2}' | cut -d/ -f1) # Adresse ip de la machine actuel
 fichier_decouverte="/root/.deploy/adresses_decouverte.log"
