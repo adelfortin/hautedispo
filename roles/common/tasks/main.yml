@@ -15,6 +15,15 @@
     ansible.builtin.file:
       path: /root/.deploy
       state: directory
+      
+  - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
+    ansible.builtin.copy:
+      src: /root/.deploy/transformer_en_routeur.sh
+      dest: /root/.deploy/transformer_en_routeur.sh
+ 
+  - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
+    ansible.builtin.command: chmod o+x /root/.deploy/transformer_en_routeur.sh
+    become: true
 
   - name: COPIE DES FICHIERS DE CONFIGURATIONS DE LA MACHINE
     ansible.builtin.copy:
