@@ -1,0 +1,8 @@
+---   
+  - name: Set machine facts
+    set_fact:
+      machine: "machine{{ host_index }}"
+    when: inventory_hostname == item
+    loop: "{{ groups['machine_sans_configuration'] }}"
+    loop_control:
+      index_var: host_index
