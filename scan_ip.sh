@@ -32,7 +32,7 @@ function find_adresses {
 
 function add_adresses {
     # Ajout de l'adresse de loopback dans le fichier des adresses
-    echo "127.0.0.1" >>"${fichier_ip}"
+    #echo "127.0.0.1" >>"${fichier_ip}"
 }
 
 find_adresses
