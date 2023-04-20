@@ -10,11 +10,9 @@
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
     ansible.builtin.command: chmod o+x /root/.deploy/ssh_auto.sh
-    become: true
 
   - name: EXECUTE LE SCRIPT DE CONFIGURATION DE CONFIGURATION SSH POUR LA SESSION ANSIBLE
     ansible.builtin.command: bash /root/.deploy/ssh_auto.sh
-    become: true
     
 - name: COMMON | Installation de tous les élèments commun aux hôtes
   hosts: machine_sans_configuration
