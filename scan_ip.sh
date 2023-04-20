@@ -28,7 +28,7 @@ function find_adresses {
     # Récupere au moin le nombre d'adresse suffisant
     head -n ${nombre_adresse_voulue} ${fichier_ip} >${tmp} && mv ${tmp} ${fichier_ip}
     # Suppression du fichier des adresses découverte
-    rm -f ${fichier_decouverte}
+    #rm -f ${fichier_decouverte}
 }
 
 function add_adresses {
