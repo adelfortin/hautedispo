@@ -126,4 +126,4 @@ fi
 return 0
 }
 
-redemarrer_service_reseau
+reboot
