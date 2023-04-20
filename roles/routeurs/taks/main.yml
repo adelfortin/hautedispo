@@ -2,10 +2,10 @@
   - name: COPIE DES FICHIERS DE CONFIGURATIONS SSH DE LA MACHINE
     ansible.builtin.copy:
       src: /root/.deploy/transformer_en_routeur.sh
-      dest: /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
+      dest: /root/.deploy/transformer_en_routeur.sh
 
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE CONFIGURATION DE LA MACHINE
-    ansible.builtin.command: chmod o+x /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
+    ansible.builtin.command: chmod o+x /root/.deploy/transformer_en_routeur.sh
 
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: bash /home/{{ ansible_facts.hostname }}/transformer_en_routeur.sh
+    ansible.builtin.command: bash /root/.deploy/transformer_en_routeur.sh
