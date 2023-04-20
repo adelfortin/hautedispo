@@ -12,6 +12,7 @@ interface="enp0s3"
 ip_actuel=$(ip addr show dev $interface | grep "inet " | awk '{print $2}' | cut -d/ -f1) # Adresse ip de la machine actuel
 fichier_decouverte="/root/.deploy/adresses_decouverte.log"
 fichier_ip="/root/.deploy/adresse_ipv4.log"
+tmp="/root/.deploy/tmp"
 
 # Cette fonction permet de liste tous les adresses IP qui sont vivant
 # sur le réseau
@@ -25,7 +26,7 @@ function find_adresses {
         fi
     done <"$fichier_decouverte"
     # Récupere au moin le nombre d'adresse suffisant
-    head -n ${nombre_adresse_voulue} ${fichier_ip} >tmp && mv tmp ${fichier_ip}
+    head -n ${nombre_adresse_voulue} ${fichier_ip} >${tmp} && mv ${tmp} ${fichier_ip}
     # Suppression du fichier des adresses découverte
     rm -f ${fichier_decouverte}
 }
