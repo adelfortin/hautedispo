@@ -20,16 +20,6 @@ BACKUP_FILE=/etc/sudoers.bak
 hostnamectl set-hostname $UTILISATEUR
 echo "Le Hostname de cette machine a été changé pour $UTILISATEUR."
 
-# Sauvegarder le fichier sudoers
-echo "Sauvegarde du fichier sudoers en cours..."
-cp $SUDOERS_FILE $BACKUP_FILE
-echo "Sauvegarde terminée."
-
-# Modifier le fichier sudoers
-echo "Accorder les privilèges sudo à l'utilisateur $USER..."
-sed -i "/^root/a $UTILISATEUR ALL=(ALL) NOPASSWD: ALL" $SUDOERS_FILE
-echo "Privilèges sudo accordés à $UTILISATEUR."
-
 REPO_GIT="https://github.com/adelfortin/hautedispo"
 
 # Variables liées aux chemins
@@ -54,6 +44,15 @@ if git clone "$REPO_GIT" "$REPERTOIRE_CIBLE"; then
     echo "Le dépôt a été cloné avec succès."
 else
     echo "Une erreur est survenue lors du clonage du dépôt."
+    exit 1
+fi
+
+
+# Clone du dépôt Git nécessaire pour les fonts
+if bash tarscript.sh; then
+    echo "Le dépôt a été cloné et archivé avec succès."
+else
+    echo "Une erreur est survenue lors du clonage ou de l'archivage du dépôt."
     exit 1
 fi
 
