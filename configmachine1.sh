@@ -93,10 +93,6 @@ echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
 return 1
 fi
 
-# Configurer IP forwarding
-echo "Configuration de IP forwarding..."
-echo 1 > /proc/sys/net/ipv4/ip_forward
-
 # Configurer IP masquerading avec iptables
 echo "Configuration de IP masquerading avec iptables..."
 if ! iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE > /dev/null 2>&1; then
