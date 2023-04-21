@@ -22,4 +22,4 @@
   
   - name: Attendre la reconnexion
     ansible.builtin.wait_for_connection:
-      tiemout: 900
+      timeout: 900
