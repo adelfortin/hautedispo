@@ -30,6 +30,7 @@
   hosts: cloture
   connection: local
   become: true
+  ignore_unreachable: true
   roles:
     - cloture
 
@@ -38,6 +39,7 @@
   hosts: relai
   connection: local
   become: true
+  ignore_unreachable: true
   roles:
     - relai
 
