@@ -1,6 +1,6 @@
 ---
   - name: Execute transformer_en_routeur.sh script
-    ansible.builtin.command: mv /root/deploy/configsshmachine8 /root/.deploy/config
+    ansible.builtin.command: mv /root/.deploy/configsshmachine8 /root/.deploy/config
     become: true
     
   - name: DONNE LES DROITS D'EXECUTION POUR LE SCRIPT DE REDEMARRAGE
