@@ -15,7 +15,6 @@
 # - PASSERELLE_1 : l'adresse de passerelle pour cette connexion
 # - PASSERELLE_2 : l'adresse de passerelle pour cette connexion
 
-
 UTILISATEUR="client"
 CHEMIN_DE_BASE="/home/$UTILISATEUR"
 THEME_BASH=".bash/themes/agnoster-bash"
@@ -36,82 +35,77 @@ INTERFACE_1="enp0s9"
 DNS_1="10.156.32.33"
 DNS_2="10.154.59.104"
 PASSERELLE_1="192.168.84.1"
-SUDOERS_FILE=/etc/sudoers
-BACKUP_FILE=/etc/sudoers.bak
 
 # Config du Hostname
-if hostnamectl set-hostname $UTILISATEUR ; then
-	echo "Le nom d'hôte de cette machine a été changé pour $UTILISATEUR."
+if hostnamectl set-hostname $UTILISATEUR; then
+    echo "Le nom d'hôte de cette machine a été changé pour $UTILISATEUR."
 else
-	echo "Erreur : Impossible de changer le nom d'hôte de cette machine pour $UTILISATEUR." >&2
-exit 1
+    echo "Erreur : Impossible de changer le nom d'hôte de cette machine pour $UTILISATEUR." >&2
+    exit 1
 fi
 
 # Création de la première connexion
-if nmcli connection add type ethernet con-name réseau84 ifname $INTERFACE_1 ipv4.addresses $IPV4_1 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual ; then
-	echo "La première connexion a été correctement créée."
+if nmcli connection add type ethernet con-name réseau84 ifname $INTERFACE_1 ipv4.addresses $IPV4_1 ipv4.gateway $PASSERELLE_1 ipv4.dns "$DNS_1 $DNS_2" ipv4.method manual; then
+    echo "La première connexion a été correctement créée."
 else
-	echo "Erreur : Impossible de créer la première connexion." >&2
-exit 1
+    echo "Erreur : Impossible de créer la première connexion." >&2
+    exit 1
 fi
 
 # Création du groupe
-if groupadd $UTILISATEUR ; then
-	echo "Le groupe $UTILISATEUR a été correctement créé."
+if groupadd $UTILISATEUR; then
+    echo "Le groupe $UTILISATEUR a été correctement créé."
 else
-	echo "Erreur : Impossible de créer le groupe $UTILISATEUR." >&2
-exit 1
+    echo "Erreur : Impossible de créer le groupe $UTILISATEUR." >&2
+    exit 1
 fi
 
 # Création de l'utilisateur
-if useradd -g $UTILISATEUR -G wheel -m $UTILISATEUR ; then
-	echo "L'utilisateur $UTILISATEUR a été correctement créé."
+if useradd -g $UTILISATEUR -G wheel -m $UTILISATEUR; then
+    echo "L'utilisateur $UTILISATEUR a été correctement créé."
 else
-	echo "Erreur : Impossible de créer l'utilisateur $UTILISATEUR." >&2
-exit 1
+    echo "Erreur : Impossible de créer l'utilisateur $UTILISATEUR." >&2
+    exit 1
 fi
 
 # Création du password pour l'utilisateur
-if echo "$UTILISATEUR" | passwd --stdin $UTILISATEUR ; then
-	echo "Le mot de passe pour l'utilisateur $UTILISATEUR a été correctement créé."
+if echo "$UTILISATEUR" | passwd --stdin $UTILISATEUR; then
+    echo "Le mot de passe pour l'utilisateur $UTILISATEUR a été correctement créé."
 else
-	echo "Erreur : Impossible de créer le mot de passe pour l'utilisateur $UTILISATEUR." >&2
-exit 1
+    echo "Erreur : Impossible de créer le mot de passe pour l'utilisateur $UTILISATEUR." >&2
+    exit 1
 fi
 
 # Fonction pour créer un dossier à partir d'un chemin spécifié
 # Prend un paramètre : le chemin du dossier à créer
-creer_dossier() {
-if [ -d "$1" ]; then
-echo "Le dossier '$1' existe déjà."
-else
-mkdir -p "$1"
-if [ $? -eq 0 ]; then
-echo "Le dossier '$1' a été créé avec succès."
-else
-echo "Erreur lors de la création du dossier '$1'."
-fi
-fi
+function creer_dossier() {
+    if [ -d "$1" ]; then
+        echo "Le dossier '$1' existe déjà."
+    else
+        if mkdir -p "$1"; then
+            echo "Le dossier '$1' a été créé avec succès."
+        else
+            echo "Erreur lors de la création du dossier '$1'."
+        fi
+    fi
 }
 
 # Fonction pour copier des fichiers ou des dossiers
 # Prend deux paramètres : la source et la destination de la copie
-copier() {
-source="$1"
-destination="$2"
+function copier() {
+    source="$1"
+    destination="$2"
 
-# Créer le dossier de destination s'il n'existe pas encore
-creer_dossier "$(dirname "$destination")"
+    # Créer le dossier de destination s'il n'existe pas encore
+    creer_dossier "$(dirname "$destination")"
 
-# Copier les fichiers/dossiers
-cp -r "$source" "$destination"
-
-# Vérifier si la copie a réussi
-if [ $? -eq 0 ]; then
-echo "Le fichier/dossier '$source' a été copié avec succès vers '$destination'."
-else
-echo "Erreur lors de la copie de '$source' vers '$destination'."
-fi
+    # Copier les fichiers/dossiers
+    # Vérifier si la copie a réussi
+    if cp -r "$source" "$destination"; then
+        echo "Le fichier/dossier '$source' a été copié avec succès vers '$destination'."
+    else
+        echo "Erreur lors de la copie de '$source' vers '$destination'."
+    fi
 }
 
 mv "$CHEMIN_DE_BASE/.bashrc" "$CHEMIN_DE_BASE/.bashrc.bak"
@@ -129,4 +123,4 @@ copier "$CHEMIN_SOURCE_SSH" "$CHEMIN_DESTINATION_SSH_ROOT"
 copier "$CHEMIN_SOURCE_BASHRC" "$CHEMIN_DESTINATION_BASHRC_ROOT"
 copier "$CHEMIN_SOURCE_AGNOSTER_BASH" "$CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT"
 
-echo "Le script a terminé son exécution." 
+echo "Le script a terminé son exécution."
