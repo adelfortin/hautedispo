@@ -29,10 +29,8 @@
 - name: CLOTURE | Installation de tous les élèments commun aux hôtes
   hosts: cloture
   become: true
-  ignore_unreachable: true
   roles:
     - cloture
-
     
 - name: RELAI | Installation de tous les élèments commun aux hôtes
   hosts: relai
