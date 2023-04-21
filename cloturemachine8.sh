@@ -126,4 +126,4 @@ fi
 return 0
 }
 
-reboot
+#reboot
