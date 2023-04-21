@@ -36,6 +36,7 @@ IPV4_3="192.168.84.2/24"
 INTERFACE_1="enp0s8"
 INTERFACE_2="enp0s9"
 INTERFACE_3="enp0s10"
+PLAGE_ADRESSES_POUR_IPTABLES="192.168.0.0/16"
 DNS_1="10.156.32.33"
 DNS_2="10.154.59.104"
 PASSERELLE_1="192.168.84.1"
@@ -73,6 +74,43 @@ else
 	echo "Erreur : Impossible de créer la troisième connexion." >&2
 exit 1
 fi
+
+# Fonction pour configurer IP masquerading avec iptables
+function configurer_masquerade {
+# Vérifier que le nombre d'arguments est correct
+if [ $# -ne 2 ]; then
+echo "ERREUR : La fonction configurer_masquerade nécessite 2 arguments : l'interface Internet et la plage d'adresses IP locales." >&2
+return 1
+fi
+
+# Récupérer les arguments dans des variables
+interface_internet="$1"
+plage_ip="$2"
+
+# Vérifier que l'interface Internet existe
+if ! ip link show "$interface_internet" > /dev/null 2>&1; then
+echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
+return 1
+fi
+
+# Configurer IP forwarding
+echo "Configuration de IP forwarding..."
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# Configurer IP masquerading avec iptables
+echo "Configuration de IP masquerading avec iptables..."
+if ! iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE > /dev/null 2>&1; then
+echo "ERREUR : Impossible de configurer IP masquerading avec iptables." >&2
+return 1
+fi
+
+echo "Configuration de IP masquerading réussie."
+
+return 0
+}
+
+configurer_masquerade "$INTERFACE_3" "$PLAGE_ADRESSES_POUR_IPTABLES"
+
 
 # Création du groupe
 if groupadd $UTILISATEUR ; then
