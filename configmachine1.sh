@@ -83,33 +83,50 @@ else
 fi
 
 # Fonction pour configurer IP masquerading avec iptables
-function configurer_masquerade() {
-    # Vérifier que le nombre d'arguments est correct
-    if [ $# -ne 2 ]; then
-        echo "ERREUR : La fonction configurer_masquerade nécessite 2 arguments : l'interface Internet et la plage d'adresses IP locales." >&2
-        return 1
-    fi
+function configurer_masquerade {
+# Vérifier que le nombre d'arguments est correct
+if [ $# -ne 2 ]; then
+echo "ERREUR : La fonction configurer_masquerade nécessite 2 arguments : l'interface Internet et la plage d'adresses IP locales." >&2
+return 1
+fi
 
-    # Récupérer les arguments dans des variables
-    interface_internet="$1"
-    plage_ip="$2"
+# Récupérer les arguments dans des variables
+interface_internet="$1"
+plage_ip="$2"
 
-    # Vérifier que l'interface Internet existe
-    if ! ip link show "$interface_internet" >/dev/null 2>&1; then
-        echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
-        return 1
-    fi
+# Vérifier que l'interface Internet existe
+if ! ip link show "$interface_internet" > /dev/null 2>&1; then
+echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
+return 1
+fi
 
-    # Configurer IP masquerading avec iptables
-    echo "Configuration de IP masquerading avec iptables..."
-    if ! iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE >/dev/null 2>&1; then
-        echo "ERREUR : Impossible de configurer IP masquerading avec iptables." >&2
-        return 1
-    fi
+# Installer iptables-services s'il n'est pas déjà installé
+if ! rpm -q iptables-services > /dev/null 2>&1; then
+echo "Installation de iptables-services..."
+sudo dnf install iptables-services -y
+fi
 
-    echo "Configuration de IP masquerading réussie."
+# Configurer IP forwarding
+echo "Configuration de IP forwarding..."
+echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf > /dev/null
+sudo sysctl -p > /dev/null
 
-    return 0
+# Configurer IP masquerading avec iptables
+echo "Configuration de IP masquerading avec iptables..."
+sudo iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE
+
+# Enregistrer les règles iptables
+echo "Enregistrement des règles iptables..."
+sudo service iptables save > /dev/null
+sudo service iptables restart > /dev/null
+
+# Activer la persistance des règles iptables
+echo "Activation de la persistance des règles iptables..."
+sudo systemctl enable iptables.service
+
+echo "Configuration de IP masquerading réussie."
+
+return 0
 }
 
 configurer_masquerade "$INTERFACE_3" "$PLAGE_ADRESSES_POUR_IPTABLES"
