@@ -13,8 +13,6 @@
 # - BACKUP_FILE : le chemin vers le fichier de sauvegarde
 
 UTILISATEUR=adel
-SUDOERS_FILE=/etc/sudoers
-BACKUP_FILE=/etc/sudoers.bak
 
 #Config du Hostname
 hostnamectl set-hostname $UTILISATEUR
