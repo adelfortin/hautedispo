@@ -19,3 +19,7 @@
   - name: EXECUTE LE SCRIPT DE REDEMARRAGE
     ansible.builtin.command: bash /root/.deploy/cloture{{ machine }}.sh
     become: true
+  
+  - name: Attendre la reconnexion
+    ansible.builtin.wait_for_connection:
+      tiemout: 900
