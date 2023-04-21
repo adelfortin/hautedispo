@@ -36,7 +36,7 @@ echo "Supprimer les connexions non nécessaire"
 supprimer_connexion
 
 # Fonction pour redémarrer le service de gestionnaire de réseau
-redemarrer_service_reseau() {
+function redemarrer_service_reseau() {
     # Arrêter le service de gestionnaire de réseau
     # Vérifier si l'arrêt du service a réussi
     if systemctl stop NetworkManager; then
