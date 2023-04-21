@@ -77,32 +77,32 @@ fi
 
 # Fonction pour configurer IP masquerading avec iptables
 function configurer_masquerade {
-# Vérifier que le nombre d'arguments est correct
-if [ $# -ne 2 ]; then
-echo "ERREUR : La fonction configurer_masquerade nécessite 2 arguments : l'interface Internet et la plage d'adresses IP locales." >&2
-return 1
-fi
+	# Vérifier que le nombre d'arguments est correct
+	if [ $# -ne 2 ]; then
+		echo "ERREUR : La fonction configurer_masquerade nécessite 2 arguments : l'interface Internet et la plage d'adresses IP locales." >&2
+		return 1
+	fi
 
-# Récupérer les arguments dans des variables
-interface_internet="$1"
-plage_ip="$2"
+	# Récupérer les arguments dans des variables
+	interface_internet="$1"
+	plage_ip="$2"
 
-# Vérifier que l'interface Internet existe
-if ! ip link show "$interface_internet" > /dev/null 2>&1; then
-echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
-return 1
-fi
+	# Vérifier que l'interface Internet existe
+	if ! ip link show "$interface_internet" > /dev/null 2>&1; then
+		echo "ERREUR : L'interface $interface_internet n'existe pas." >&2
+		return 1
+	fi
 
-# Configurer IP masquerading avec iptables
-echo "Configuration de IP masquerading avec iptables..."
-if ! iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE > /dev/null 2>&1; then
-echo "ERREUR : Impossible de configurer IP masquerading avec iptables." >&2
-return 1
-fi
+	# Configurer IP masquerading avec iptables
+	echo "Configuration de IP masquerading avec iptables..."
+	if ! iptables -t nat -A POSTROUTING -s "$plage_ip" -o "$interface_internet" -j MASQUERADE > /dev/null 2>&1; then
+		echo "ERREUR : Impossible de configurer IP masquerading avec iptables." >&2
+		return 1
+	fi
 
-echo "Configuration de IP masquerading réussie."
+	echo "Configuration de IP masquerading réussie."
 
-return 0
+	return 0
 }
 
 configurer_masquerade "$INTERFACE_3" "$PLAGE_ADRESSES_POUR_IPTABLES"
@@ -113,7 +113,7 @@ if groupadd $UTILISATEUR ; then
 	echo "Le groupe $UTILISATEUR a été correctement créé."
 else
 	echo "Erreur : Impossible de créer le groupe $UTILISATEUR." >&2
-exit 1
+	exit 1
 fi
 
 # Création de l'utilisateur
@@ -121,7 +121,7 @@ if useradd -g $UTILISATEUR -G wheel -m $UTILISATEUR ; then
 	echo "L'utilisateur $UTILISATEUR a été correctement créé."
 else
 	echo "Erreur : Impossible de créer l'utilisateur $UTILISATEUR." >&2
-exit 1
+	exit 1
 fi
 
 # Création du password pour l'utilisateur
@@ -129,67 +129,66 @@ if echo "$UTILISATEUR" | passwd --stdin $UTILISATEUR ; then
 	echo "Le mot de passe pour l'utilisateur $UTILISATEUR a été correctement créé."
 else
 	echo "Erreur : Impossible de créer le mot de passe pour l'utilisateur $UTILISATEUR." >&2
-exit 1
+	exit 1
 fi
 
 # Fonction pour créer un dossier à partir d'un chemin spécifié
 # Prend un paramètre : le chemin du dossier à créer
 creer_dossier() {
 if [ -d "$1" ]; then
-echo "Le dossier '$1' existe déjà."
+	echo "Le dossier '$1' existe déjà."
 else
-mkdir -p "$1"
-if [ $? -eq 0 ]; then
-echo "Le dossier '$1' a été créé avec succès."
-else
-echo "Erreur lors de la création du dossier '$1'."
-fi
+	mkdir -p "$1"
+	if [ $? -eq 0 ]; then
+		echo "Le dossier '$1' a été créé avec succès."
+	else
+		echo "Erreur lors de la création du dossier '$1'."
+	fi
 fi
 }
 
 # Fonction pour copier des fichiers ou des dossiers
 # Prend deux paramètres : la source et la destination de la copie
-copier() {
-source="$1"
-destination="$2"
+function copier {
+	source="$1"
+	destination="$2"
 
-# Créer le dossier de destination s'il n'existe pas encore
-creer_dossier "$(dirname "$destination")"
+	# Créer le dossier de destination s'il n'existe pas encore
+	creer_dossier "$(dirname "$destination")"
 
-# Copier les fichiers/dossiers
-cp -r "$source" "$destination"
+	# Copier les fichiers/dossiers
+	cp -r "$source" "$destination"
 
-# Vérifier si la copie a réussi
-if [ $? -eq 0 ]; then
-echo "Le fichier/dossier '$source' a été copié avec succès vers '$destination'."
-else
-echo "Erreur lors de la copie de '$source' vers '$destination'."
-fi
+	# Vérifier si la copie a réussi
+	if [ $? -eq 0 ]; then
+		echo "Le fichier/dossier '$source' a été copié avec succès vers '$destination'."
+	else
+		echo "Erreur lors de la copie de '$source' vers '$destination'."
+	fi
 }
 
 # Fonction pour exécuter un script en mode sudo
 # Prend un paramètre : le chemin du script à exécuter
-executer_script_sudo() {
-script="$1"
+function executer_script_sudo {
+	script="$1"
 
-# Vérifier si le fichier de script existe
-if [ -f "$script" ]; then
-# Exécuter le script avec sudo
-sudo bash "$script"
+	# Vérifier si le fichier de script existe
+	if [ -f "$script" ]; then
+		# Exécuter le script avec sudo
+		sudo bash "$script"
+		# Vérifier si l'exécution a réussi
+		if [ $? -eq 0 ]; then
+			echo "Le script '$script' a été exécuté avec succès en mode sudo."
+		else
+			echo "Erreur lors de l'exécution du script '$script' en mode sudo."
+			return 1
+		fi
+	else
+		echo "Le fichier '$script' n'existe pas ou n'est pas un fichier de script."
+		return 1
+	fi
 
-# Vérifier si l'exécution a réussi
-if [ $? -eq 0 ]; then
-echo "Le script '$script' a été exécuté avec succès en mode sudo."
-else
-echo "Erreur lors de l'exécution du script '$script' en mode sudo."
-return 1
-fi
-else
-echo "Le fichier '$script' n'existe pas ou n'est pas un fichier de script."
-return 1
-fi
-
-return 0
+	return 0
 }
 
 
