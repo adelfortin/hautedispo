@@ -28,7 +28,6 @@
     
 - name: CLOTURE | Installation de tous les élèments commun aux hôtes
   hosts: cloture
-  connection: local
   become: true
   ignore_unreachable: true
   roles:
