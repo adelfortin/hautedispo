@@ -59,6 +59,9 @@ return 0
 
 ajouter_proxy_dnf "$PROXY"
 
+# Installation de Git et Ansible
+dnf install -y git ansible
+
 # Fonction pour ajouter des paramètres de proxy pour GitHub
 # Prend un paramètre : l'adresse du proxy à ajouter
 ajouter_proxy_github() {
@@ -86,9 +89,6 @@ return 0
 }
 
 ajouter_proxy_github "$PROXY"
-
-# Installation de Git et Ansible
-dnf install -y git ansible
 
 # Création du répertoire de déploiement
 mkdir -p "$REPERTOIRE_CIBLE"
