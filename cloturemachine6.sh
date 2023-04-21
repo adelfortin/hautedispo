@@ -47,7 +47,6 @@ function redemarrer_service_reseau() {
     fi
 
     # Redémarrer le service de gestionnaire de réseau
-
     # Vérifier si le redémarrage du service a réussi
     if systemctl restart NetworkManager; then
         echo "Le service de gestionnaire de réseau a été redémarré avec succès."
