@@ -13,6 +13,7 @@
 # - BACKUP_FILE : le chemin vers le fichier de sauvegarde
 
 UTILISATEUR=adel
+PROXY="http://proxy.infra.dgfip:3128"
 
 #Config du Hostname
 hostnamectl set-hostname $UTILISATEUR
@@ -30,6 +31,33 @@ CHEMIN_SCRIPT_MODIF_INI="$REPERTOIRE_CIBLE/modification_inventaire_ini.sh"
 # Variables liées à Ansible
 UTILISATEUR_ANSIBLE="root"
 MOT_DE_PASSE_ANSIBLE="master"
+
+# Fonction pour ajouter une adresse de proxy pour DNF
+# Prend un paramètre : l'adresse du proxy à ajouter
+ajouter_proxy_dnf() {
+proxy="$1"
+
+# Vérifier si le fichier dnf.conf existe
+if [ -f "/etc/dnf/dnf.conf" ]; then
+# Ajouter l'adresse du proxy à la fin du fichier
+echo "proxy=$proxy" >> /etc/dnf/dnf.conf
+
+# Vérifier si l'ajout a réussi
+if [ $? -eq 0 ]; then
+echo "L'adresse du proxy '$proxy' a été ajoutée avec succès au fichier /etc/dnf/dnf.conf."
+else
+echo "Erreur lors de l'ajout de l'adresse du proxy '$proxy' au fichier /etc/dnf/dnf.conf."
+return 1
+fi
+else
+echo "Le fichier /etc/dnf/dnf.conf n'existe pas ou n'est pas accessible."
+return 1
+fi
+
+return 0
+}
+
+ajouter_proxy_dnf "$PROXY"
 
 # Installation de Git et Ansible
 dnf install -y git ansible
