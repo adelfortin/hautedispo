@@ -14,21 +14,30 @@
 # - INTERFACE_3 : le nom la troisième interface utilisée dans le cadre de notre architecture réseau
 # - INTERFACE_4 : le nom la quatrième interface utilisée dans le cadre de notre architecture réseau
 
+# Configuration normal
 UTILISATEUR="haproxyserver"
 CHEMIN_DE_BASE="/home/$UTILISATEUR"
-THEME_BASH=".bash/themes/agnoster-bash"
-CHEMIN_DOSSIER_SSH="$CHEMIN_DE_BASE/.ssh"
-CHEMIN_DU_THEME_BASH="$CHEMIN_DE_BASE/$THEME_BASH"
 CHEMIN_SOURCE_BASE="/root/.deploy"
-CHEMIN_SOURCE_SSH="$CHEMIN_SOURCE_BASE/config"
-CHEMIN_SOURCE_BASHRC="$CHEMIN_SOURCE_BASE/.bashrc"
+
+# Configuration thèmes
+THEME_BASH=".bash/themes/agnoster-bash"
+CHEMIN_DU_THEME_BASH="$CHEMIN_DE_BASE/$THEME_BASH"
 CHEMIN_SOURCE_AGNOSTER_BASH="$CHEMIN_SOURCE_BASE/.agnoster.bash"
-CHEMIN_DESTINATION_SSH="$CHEMIN_DOSSIER_SSH/config"
-CHEMIN_DESTINATION_BASHRC="$CHEMIN_DE_BASE/.bashrc"
 CHEMIN_DESTINATION_AGNOSTER_BASH="$CHEMIN_DU_THEME_BASH/agnoster.bash"
-CHEMIN_DESTINATION_SSH_ROOT="/root/config"
-CHEMIN_DESTINATION_BASHRC_ROOT="root/.bashrc"
 CHEMIN_DESTINATION_AGNOSTER_BASH_ROOT="root/.ssh/config"
+
+# Configuration ssh
+CHEMIN_DOSSIER_SSH="$CHEMIN_DE_BASE/.ssh"
+CHEMIN_SOURCE_SSH="$CHEMIN_SOURCE_BASE/config"
+CHEMIN_DESTINATION_SSH="$CHEMIN_DOSSIER_SSH/config"
+CHEMIN_DESTINATION_SSH_ROOT="/root/config"
+
+# Configuration bashrc
+CHEMIN_SOURCE_BASHRC="$CHEMIN_SOURCE_BASE/.bashrc"
+CHEMIN_DESTINATION_BASHRC="$CHEMIN_DE_BASE/.bashrc"
+CHEMIN_DESTINATION_BASHRC_ROOT="root/.bashrc"
+
+# Configuration du réseau
 CHEMIN_DU_SCRIPT_ROUTEUR="$CHEMIN_SOURCE_BASE/transformer_en_routeur.sh"
 IPV4_1="192.168.82.1/24"
 IPV4_2="192.168.83.2/24"
@@ -48,7 +57,7 @@ if hostnamectl set-hostname $UTILISATEUR ; then
 	echo "Le nom d'hôte de cette machine a été changé pour $UTILISATEUR."
 else
 	echo "Erreur : Impossible de changer le nom d'hôte de cette machine pour $UTILISATEUR." >&2
-exit 1
+	exit 1
 fi
 
 # Création de la première connexion
@@ -56,7 +65,7 @@ if nmcli connection add type ethernet con-name reseau82 ifname $INTERFACE_1 ipv4
 	echo "La première connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la première connexion." >&2
-exit 1
+	exit 1
 fi
 
 # Création de la seconde connexion
@@ -64,7 +73,7 @@ if nmcli connection add type ethernet con-name reseau83 ifname $INTERFACE_2 ipv4
 	echo "La seconde connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la seconde connexion." >&2
-exit 1
+	exit 1
 fi
 
 # Création de la troisième connexion
@@ -72,7 +81,7 @@ if nmcli connection add type ethernet con-name reseau84 ifname $INTERFACE_3 ipv4
 	echo "La troisième connexion a été correctement créée."
 else
 	echo "Erreur : Impossible de créer la troisième connexion." >&2
-exit 1
+	exit 1
 fi
 
 # Fonction pour configurer IP masquerading avec iptables
@@ -106,7 +115,6 @@ function configurer_masquerade {
 }
 
 configurer_masquerade "$INTERFACE_3" "$PLAGE_ADRESSES_POUR_IPTABLES"
-
 
 # Création du groupe
 if groupadd $UTILISATEUR ; then
