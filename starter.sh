@@ -59,6 +59,34 @@ return 0
 
 ajouter_proxy_dnf "$PROXY"
 
+# Fonction pour ajouter des paramètres de proxy pour GitHub
+# Prend un paramètre : l'adresse du proxy à ajouter
+ajouter_proxy_github() {
+proxy="$1"
+
+# Vérifier si le fichier gitconfig existe
+if [ -f "~/.gitconfig" ]; then
+# Ajouter les paramètres de proxy pour GitHub au fichier
+git config --global http.proxy "$proxy"
+git config --global https.proxy "$proxy"
+
+# Vérifier si l'ajout a réussi
+if [ $? -eq 0 ]; then
+echo "Les paramètres de proxy pour GitHub ont été ajoutés avec succès au fichier ~/.gitconfig."
+else
+echo "Erreur lors de l'ajout des paramètres de proxy pour GitHub au fichier ~/.gitconfig."
+return 1
+fi
+else
+echo "Le fichier ~/.gitconfig n'existe pas ou n'est pas accessible."
+return 1
+fi
+
+return 0
+}
+
+ajouter_proxy_github "$PROXY"
+
 # Installation de Git et Ansible
 dnf install -y git ansible
 
