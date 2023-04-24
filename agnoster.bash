@@ -1187,6 +1187,7 @@ else
 	COLOR_LINE_2="AestheticLine2"
 	COLOR_LINE_3="AestheticLine3"
 	COLOR_LINE_4="AestheticLine4"
+	;;
 	haproxyserver)
 	COLOR_0="ArcDarkUser0"
 	COLOR_1="ArcDarkUser1"
