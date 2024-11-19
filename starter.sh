@@ -13,7 +13,7 @@
 # - BACKUP_FILE : le chemin vers le fichier de sauvegarde
 
 UTILISATEUR=adel
-PROXY="http://proxy.infra.dgfip:3128"
+PROXY=""
 
 #Config du Hostname
 hostnamectl set-hostname $UTILISATEUR
